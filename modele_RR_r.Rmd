@@ -1,0 +1,31 @@
+---
+title: "Un petit coup de polish - Nettoyage de fichiers Excel avec R"
+author:
+- Thomas Vroylandt^[Kantiles, thomas@kantiles.com]
+output: pdf_document
+indent: true
+bibliography: ref.bib
+---
+
+\begin{center}
+\textbf{Résumé}
+\end{center}
+Les données qui nourrissent nos analyses sont souvent issues de fichiers Excel (xls ou xlsx), envoyées par d'autres services, disponibles en *open data* ou simplement issues d'outils de collecte de données. La première étape de toute bonne analyse est alors de parvenir à importer ces données correctement. Pourtant ces fichiers Excel ne sont pas tout le temps pensés pour être importés par un ordinateur et un logiciel statistique. Ils peuvent être truffés de formatages - texte en gras, cellules colorées, indentations, cellules fusionnées, pour ne donner que quelques exemples - qui complexifie leur import. Bien qu'il s'agisse d'une étape classique et cruciale, il est courant de buter sur un problème de ce type. Cette présentation se propose d'aborder plusieurs niveaux pour importer ces fichiers et les transformer en un format *tidy* (@tidy), facilement exploitable par la suite, à l'aide de packages comme {readxl} (@readxl), {tidyxl} (@tidyxl) ou encore {unpivotr} (@unpivotr). Elle s'appuie sur des jeux de données rééls disponibles en accès libre.
+
+
+\noindent \textbf{Mots-clefs} : Excel - Data Cleaning - Nettoyage de données
+
+## Développement 
+
+Cette présentation s'articulera principalement autour de jeux de données rééls et disponibles en ligne plus ou moins complexes à importer et nettoyer, issus d'administrations françaises productrices de données (Insee, Urssaf CN, Drees, etc.).
+
+Elle s'attache à proposer des solutions pratiques, nourries par l'expérience et de complexité croissante pour quelques cas courants compliquant l'import des données :
+
+- tableaux mal positionnés sur la feuille
+- onglets contenant chacun une année/région/etc.
+- formatages avancés (cellules fusionnées, indentations)
+- information sous une autre forme que le texte (gras, couleur)
+- fichiers différents d'une année à l'autre
+- plusieurs tableaux à la suite dans un même fichier
+
+## Références
