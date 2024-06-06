@@ -1,0 +1,415 @@
+---
+title: "Un petit coup de polish - Nettoyage de fichiers Excel avec R"
+subtitle: "Rencontres R 2024"
+author: "Thomas Vroylandt, Kantiles"
+format: 
+  revealjs
+title-slide-attributes:
+  data-background-image: oss117_excel.jpeg
+  data-background-size: cover
+execute: 
+  echo: true
+---
+
+QR code vers repo
+
+## A propos
+
+Thomas Vroylandt
+
+Kantiles
+
+thomas@kantiles.com
+
+www.kantiles.com
+
+personal
+
+Cas réels, principalement dans le cadre de le production d'indicateurs pour un client de la stat publique
+
+## Que demande le peuple ?
+
+```{r}
+#| echo: false
+knitr::include_graphics("assets/tidydata.jpeg")
+```
+
+Source : Allison Horst, https://openscapes.org/blog/2020-10-12-tidy-data/
+
+## De l'autre côté du miroir
+
+```{r}
+#| echo: false
+knitr::include_graphics("assets/excel_meme.jpeg")
+```
+
+## De l'autre côté du miroir
+
+Une grande créativité dans les mises en forme des données !
+
+Captures d'écrans qui se superpose de fichiers Excel en bordel avec smileys de réactions
+
+## Comment faire ?
+
+==> Autant le dire de suite, il n'y a pas de solution générale
+
+=> privilégier quand c'est possible d'autres exports (c'est souvent le cas notamment en open data avec le paramétrage OpenDataSoft qui force + parquet)
+
+Mais plutôt des solutions à appliquer en fonction des fichiers et de ce que l'on souhaite récupérer
+
+## Nos outils
+
+tidyverse pour le général
+
+readxl https://readxl.tidyverse.org/ --> lecture d'un seul onglet, plutôt pour les cas simples, gère les range, geometry rectangulaire
+
+tidyxl https://github.com/nacnudus/tidyxl/ --> gère tout, mais degré d'abstraction supplémentaire, mais logique plus manipulation de données, et moins import
+
+unpivotr https://github.com/nacnudus/unpivotr/ --> prend en entrée un fichier ouvert avec tidyxl
+
+et bien d'autres (openxlsx2 https://github.com/JanMarvin/openxlsx2 )
+
+Notamment pour écrire des données, mais cela ne sera pas traité ici (openxlsx2)
+
+On va illustrer les différentes façon
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(tidyxl)
+library(unpivotr)
+```
+
+## C24 (mea culpa)
+
+```{r}
+#| echo: false
+knitr::include_graphics("assets/c24_0.png")
+```
+
+Drees - contient la répartition par âge de la mère des naissances
+
+Page : https://data.drees.solidarites-sante.gouv.fr/explore/dataset/601_indicateurs-de-contexte/information/
+
+Lien direct : https://data.drees.solidarites-sante.gouv.fr/api/datasets/1.0/601_indicateurs-de-contexte/attachments/c24_isd_part_accouchements_selon_age_mere_xlsx/
+
+
+## C24 (mea culpa)
+
+Range décalé
+
+```{r}
+#| echo: false
+knitr::include_graphics("assets/c24_1.png")
+```
+
+## C24 (mea culpa)
+
+Ligne de header doublonné
+
+```{r}
+#| echo: false
+knitr::include_graphics("assets/c24_2.png")
+```
+
+## C24 (mea culpa)
+
+Un onglet par année (mais tous pareil) + un onglet de documentation
+
+```{r}
+#| echo: false
+knitr::include_graphics("assets/c24_3.png")
+```
+
+## C24 (mea culpa)
+
+Des données en bas que l'on ne souhaite pas
+
+## une proposition avec readxl
+
+reprendre la fonction et ses arguments un par un
+
+faire avec code + résultat an face à face avec highlight
+
+sheet nommé ou en position
+range ou skip, ici on fait un skip et on gérera derrière, mais un range peut permettre de sortir direct les lignes du bas. Aussi n_max
+
+on peut aussi spécifier à la main un vecteur de noms, ou skip des colonnes avec col_types
+
+```{r}
+path_c24 <- "data/C24-ISD_Part_accouchements_selon_age_mere.xlsx"
+
+df_c24_init <-
+  read_xlsx(path_c24,
+            sheet = "2022",
+            skip = 5,
+            .name_repair = "unique_quiet") |>
+  rename(code_dep = ...1,
+         lib_dep = ...2) |>
+  pivot_longer(-c(code_dep, lib_dep),
+               names_to = "age_mere",
+               values_to = "perc_naiss")
+
+```
+
+## une proposition avec readxl
+
+AStuce quand les headers sont inversés (exemple PA08) -> https://readxl.tidyverse.org/articles/multiple-header-rows.html (ou avec slice)
+
+Puis on fait une fonction sur les onglets
+On peut aussi gérer dans une custom fonction si on a du wrangling à faire avant
+Des fois il faut aussi passer un as.character sur l'ensemble avant le pivot puis gérer les cas
+
+```{r}
+df_c24_full <- excel_sheets(path_c24) |>
+  set_names() |>
+  # remove documentation sheet
+  _[-12] |>
+  map(read_xlsx,
+      path = path_c24,
+      skip = 5,
+      .name_repair = "unique_quiet") |>
+  list_rbind(names_to = "annee") |>
+  rename(code_dep = ...1,
+         lib_dep = ...2) |>
+  pivot_longer(-c(annee, code_dep, lib_dep),
+               names_to = "age_mere",
+               values_to = "perc_naiss") |> 
+  mutate( annee = as.numeric(annee)) |> 
+  filter(!is.na(code_dep) & !is.na(perc_naiss) & !code_dep %in% c("F", "M"))
+
+df_c24_full
+```
+
+## avec tidyxl + unpivotr 
+
+```{r}
+df_cells_c24 <- xlsx_cells(path_c24)
+
+df_cells_c24
+```
+
+## avec tidyxl + dplyr/tidyr 
+
+Soit on peut gérer à la main, en considérant que le contenu est numerique et le reste du character, on va fill puis pivot
+puis gérer sur les colonnes
+
+Un peu artisanal mais ça passe
+
+```{r}
+df_c24_cells_full <- df_cells_c24 |>
+  filter(sheet != "Documentation") |>
+  filter(row >= 4 & !is_blank & col != 2) |>
+  select(sheet, row, col, character, numeric) |>
+  # on construit lignes et colonnes
+  mutate(header_row = case_when(row == 6 ~ character),
+         code_dep = case_when(col == 1 ~ coalesce(as.character(numeric), character))) |>
+  # fill des colonnes
+  group_by(col) |>
+  fill(header_row, .direction = "down") |>
+  # fill des codes dep
+  group_by(row) |>
+  fill(code_dep, .direction = "down") |>
+  ungroup() |>
+  # on filtre
+  filter(!is.na(numeric) &
+           !is.na(code_dep) &
+           !is.na(header_row) & !code_dep %in% c("F", "M")) |>
+  mutate(sheet = as.numeric(sheet),
+         header_row = str_trim(header_row)) |>
+  select(annee = sheet,
+         code_dep,
+         age_mere = header_row,
+         perc_naiss = numeric)
+```
+
+## avec tidyxl + unpivotr 
+
+penser à grouper par onglet
+
+-> fonctions très puissantes mais pas toujours faciles à manipuler
+
+up-left car une cellule fusionnée ne remplit en fait que la première valeur en haut à gauche
+-> exemple capture d'écran
+
+```{r}
+df_cells_c24 |>
+  filter(row >= 5) |>
+  group_by(sheet) |>
+  behead("up-left", "typ_var") |>
+  behead("up", "mod_var") |>
+  behead("left", "code_dep") |>
+  behead("left", "lib_dep") |>
+  ungroup() |>
+  mutate(mod_var = str_trim(mod_var)) |> 
+  select(sheet, typ_var, mod_var, code_dep, lib_dep, numeric) |>
+  filter(!is.na(code_dep) &
+           !code_dep %in% c("F", "M") &
+           !is.na(numeric)) 
+```
+
+Faire des schéma étapes par étape
+
+## Résultat
+
+Lien demo-isd + iframe, ou capture d'écran et lien
+
+<iframe src="https://kantiles.github.io/demo_isd/main.html"></iframe>
+
+https://github.com/kantiles/demo_isd
+
+## Quelques astuces
+
+- on peut paramétriser le nombre de lignes à sauter par onglet (dans le filter), car cela arrive que les espacements ne soient pas les mêmes d'une année sur l'autre
+- penser à utiliser les fonctions de `dplyr` et `tidyr` comme `fill` ou `coalesce` en complément
+- séparer par bloc + faire des `str_detect`
+
+exemple pour récupérer les dates de MAJ de chaque onglet
+
+```{r}
+df_cells_c24 |>
+  select(sheet, character) |>
+  filter(str_detect(character, "mise à jour")) |>
+  mutate(
+    date_maj = str_remove(character, "Date de mise à jour : "),
+    date_maj = dmy(date_maj)
+  )
+```
+
+## Classique, fichier Insee
+
+Aucune difficulté --> inverser avec l'exemple d'avant ?
+
+Population active et taux d'activité au sens du recensement selon le sexe et l'âge en 2020 : comparaisons départementales
+
+https://www.insee.fr/fr/statistiques/2012710 (TCRD_015)
+
+```{r}
+#| echo: false
+knitr::include_graphics("assets/insee_activite_0.png")
+```
+
+## Classique, fichier Insee
+
+```{r}
+#| echo: false
+knitr::include_graphics("assets/insee_activite_2.png")
+```
+
+## Insee tidyxl + unpivotr
+
+```{r}
+xlsx_cells("data/TCRD_015.xlsx") |>
+  filter(sheet == "DEP" & row >= 3) |>
+  behead("up-left", "typ_var") |>
+  behead("up", "mod_var") |>
+  behead("left", "code_dep") |>
+  behead("left", "lib_dep") |>
+  select(typ_var, mod_var, code_dep, lib_dep, numeric)
+```
+
+## Autres options
+
+- readxl en deux fois
+- ou en nommant les colonnes et en faisant un range ou un skip = 5, plus artisanal mais aussi plus facile si on est moins à l'aise
+
+le montrer
+
+## FAJ - Dernier exemple sur le sujet
+
+https://data.drees.solidarites-sante.gouv.fr/explore/dataset/374_le-fond-d-aide-aux-jeunes-faj/information/
+
+Cela fonctionne dans la plupart des cas assez bien, même avec des cellules fusionnées et d'autres non
+
+petite subtilité car tous les onglets ne commencent pas au même endroit et ne terminent pas au même endroit
+
+```{r}
+df_cells_faj <- xlsx_cells("data/FAJ Données annuelles 2007-2022.xlsx") |>
+  # on filtre sur les onglets qui nous intéressent - on retire FAJ2015 qui a une structuration différente et qu'il faudrait traiter à part
+  filter(str_sub(sheet, 1, 6) == "FAJ 20" & sheet != "FAJ 2015")
+
+# ligne de début
+df_cells_faj_min <- df_cells_faj |> 
+  filter(character == "Départements") |> 
+  select(sheet, row_min = row)
+
+# ligne de fin - on aurait aussi pu détecter La Réunion
+df_cells_faj_max <- df_cells_faj |> 
+  filter(is_blank & col == 1) |> 
+  inner_join(df_cells_faj_min, by = join_by(sheet)) |> 
+  # on ajoute quelques lignes
+  filter(row > row_min + 3) |> 
+  group_by(sheet) |> 
+  filter(row == min(row)) |>
+  ungroup() |> 
+  select(sheet, row_max = row) |>
+  # comme on a detecté la ligne blanche suivant la fin, on décale
+  mutate(row_max = row_max - 1)
+
+# on jointe pour cibler les tableaux
+df_cells_faj |>
+  inner_join(df_cells_faj_min, by = join_by(sheet)) |>
+  inner_join(df_cells_faj_max, by = join_by(sheet)) |>
+  filter(between(row, row_min, row_max)) |>
+  group_by(sheet) |>
+  behead("up-left", "typ_var") |>
+  behead("up", "mod_var") |>
+  behead("left", "code_dep") |>
+  behead("left", "lib_dep") |>
+  ungroup() |>
+  select(sheet, typ_var, mod_var, code_dep, lib_dep, character, numeric)
+```
+
+## En v2 FAJ - partitions
+
+Tab 2022 avec deux tabs dans le même --> séparation des tabs plutôt que de ne faire que le premier
+
+on va partitionner les cellules en tableaux, comme un nest, puis on va pouvoir soit travailler indépendemment, soit avec un map si la structure est similaire travailler le sujet
+
+pour cela, il va falloir délimiter, ici on va le faire par les en-têtes, mais cela peut aussi se faire avec une détection des blancs (mais plus complexe avec les cellules fusionnées)
+
+```{r}
+df_cells_faj_filtered <- df_cells_faj |>
+  filter(sheet == "FAJ 2022" & row >= 9)
+
+df_title_cells_faj <- df_cells_faj_filtered |>
+  filter(character %in% c("Départements", "Métropoles et départements hors métropoles"))
+
+# on partitionne
+partitions_faj <- partition(df_cells_faj_filtered,
+          df_title_cells_faj)
+
+# on reprendre le code du dessus
+# et on assemble
+map(
+  partitions_faj$cells,
+  \(data) data |>
+    behead("up-left", "typ_var") |>
+    behead("up", "mod_var") |>
+    behead("left", "code_dep") |>
+    behead("left", "lib_dep") |>
+    select(typ_var, mod_var, code_dep, lib_dep, character, numeric)
+) |>
+  set_names("dep", "metro") |>
+  list_rbind(names_to = "type_geo")
+```
+
+## Panorama statistique
+
+https://drees.solidarites-sante.gouv.fr/sites/default/files/panorama/telechargement.htm
+
+démo pour le format sous une autre forme que le texte (gras, couleur)
+
+## All in one
+
+Panorama
+
+## Quelques astuces
+
+- ne pas hésiter à coder à la main des choses, tout ne peut pas être automatisé
+- faire plusieurs passes, par exemple pour se faire un fichier de référence des noms de colonnes utilisables derrière
+- ce n'est que de la manip de données
+
+## Questions ?
+
+
