@@ -7,11 +7,13 @@
 <link href="prez_nettoyage_excel_kantiles_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="prez_nettoyage_excel_kantiles_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="prez_nettoyage_excel_kantiles_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="prez_nettoyage_excel_kantiles_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="prez_nettoyage_excel_kantiles_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="prez_nettoyage_excel_kantiles_files/libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="prez_nettoyage_excel_kantiles_files/libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Thomas Vroylandt, Kantiles">
-  <title>Un petit coup de polish - Nettoyage de fichiers Excel avec R</title>
+  <title>Un petit coup de polish Nettoyage de fichiers Excel avec R</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -390,8 +392,8 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="oss117_excel.jpeg" data-background-size="cover" class="quarto-title-block center">
-  <h1 class="title">Un petit coup de polish - Nettoyage de fichiers Excel avec R</h1>
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Un petit coup de polish Nettoyage de fichiers Excel avec R</h1>
   <p class="subtitle">Rencontres R 2024</p>
 
 <div class="quarto-title-authors">
@@ -406,25 +408,39 @@ Thomas Vroylandt, Kantiles
 <section class="slide level2">
 
 <p>QR code vers repo</p>
-</section>
-<section id="a-propos" class="slide level2">
-<h2>A propos</h2>
-<p>Thomas Vroylandt</p>
-<p>Kantiles</p>
-<p>thomas@kantiles.com</p>
-<p>www.kantiles.com</p>
-<p>personal</p>
-<p>Cas réels, principalement dans le cadre de le production d’indicateurs pour un client de la stat publique</p>
+<p>plutôt dans le README</p>
+
+<img data-src="img/oss117_excel.jpeg" width="150" class="r-stretch"></section>
+<section id="qui-suis-je" class="slide level2">
+<h2>Qui suis-je ?</h2>
+<div class="columns">
+<div class="column fragment fade-in" style="width:40%;">
+<div class="small-box-img">
+<p><img data-src="img/thomas.jpeg" class="round-img"></p>
+</div>
+<p><strong>Thomas Vroylandt</strong></p>
+<p>Associé (Kantiles) <a href="mailto:thomas@kantiles.com">thomas@kantiles.com</a></p>
+</div><div class="column fragment fade-in" style="width:60%;">
+<ul>
+<li>Rapports statistiques</li>
+<li>Chaîne de production</li>
+<li>Politiques sociales et de l’emploi</li>
+</ul>
+<p><i class="fa-solid fa-arrow-right" aria-label="arrow-right"></i> Cas réels, dans le cadre de production d’indicateurs pour un service statistique ministériel</p>
+</div>
+</div>
 </section>
 <section id="que-demande-le-peuple" class="slide level2">
 <h2>Que demande le peuple ?</h2>
 
-<img data-src="assets/tidydata.jpeg" width="2400" class="r-stretch"><p>Source : Allison Horst, https://openscapes.org/blog/2020-10-12-tidy-data/</p>
+<img data-src="img/tidydata.jpeg" width="320" class="r-stretch"><div class="source">
+<p>Source : Allison Horst <a href="https://openscapes.org/blog/2020-10-12-tidy-data/"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i></a></p>
+</div>
 </section>
 <section id="de-lautre-côté-du-miroir" class="slide level2">
 <h2>De l’autre côté du miroir</h2>
 
-<img data-src="assets/excel_meme.jpeg" width="368" class="r-stretch"></section>
+<img data-src="img/excel_meme.jpeg" width="320" class="r-stretch"></section>
 <section id="de-lautre-côté-du-miroir-1" class="slide level2">
 <h2>De l’autre côté du miroir</h2>
 <p>Une grande créativité dans les mises en forme des données !</p>
@@ -439,10 +455,10 @@ Thomas Vroylandt, Kantiles
 <section id="nos-outils" class="slide level2">
 <h2>Nos outils</h2>
 <p>tidyverse pour le général</p>
-<p>readxl https://readxl.tidyverse.org/ –&gt; lecture d’un seul onglet, plutôt pour les cas simples, gère les range, geometry rectangulaire</p>
-<p>tidyxl https://github.com/nacnudus/tidyxl/ –&gt; gère tout, mais degré d’abstraction supplémentaire, mais logique plus manipulation de données, et moins import</p>
-<p>unpivotr https://github.com/nacnudus/unpivotr/ –&gt; prend en entrée un fichier ouvert avec tidyxl</p>
-<p>et bien d’autres (openxlsx2 https://github.com/JanMarvin/openxlsx2 )</p>
+<p><a href="https://readxl.tidyverse.org/"><code>readxl</code></a> –&gt; lecture d’un seul onglet, plutôt pour les cas simples, gère les range, geometry rectangulaire</p>
+<p><a href="https://github.com/nacnudus/tidyxl/"><code>tidyxl</code></a> –&gt; gère tout, mais degré d’abstraction supplémentaire, mais logique plus manipulation de données, et moins import</p>
+<p><a href="https://github.com/nacnudus/unpivotr/"><code>unpivotr</code></a> –&gt; prend en entrée un fichier ouvert avec tidyxl</p>
+<p>et bien d’autres ( <a href="https://github.com/JanMarvin/openxlsx2"><code>openxlsx2</code></a> )</p>
 <p>Notamment pour écrire des données, mais cela ne sera pas traité ici (openxlsx2)</p>
 <p>On va illustrer les différentes façon</p>
 <div class="cell">
@@ -455,25 +471,24 @@ Thomas Vroylandt, Kantiles
 <section id="c24-mea-culpa" class="slide level2">
 <h2>C24 (mea culpa)</h2>
 
-<img data-src="assets/c24_0.png" width="464" class="r-stretch"><p>Drees - contient la répartition par âge de la mère des naissances</p>
-<p>Page : https://data.drees.solidarites-sante.gouv.fr/explore/dataset/601_indicateurs-de-contexte/information/</p>
-<p>Lien direct : https://data.drees.solidarites-sante.gouv.fr/api/datasets/1.0/601_indicateurs-de-contexte/attachments/c24_isd_part_accouchements_selon_age_mere_xlsx/</p>
+<img data-src="img/c24_0.png" width="464" class="r-stretch"><p>Drees - contient la répartition par âge de la mère des naissances</p>
+<p>Page : <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/601_indicateurs-de-contexte/information/"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i></a></p>
 </section>
 <section id="c24-mea-culpa-1" class="slide level2">
 <h2>C24 (mea culpa)</h2>
 <p>Range décalé</p>
 
-<img data-src="assets/c24_1.png" width="464" class="r-stretch"></section>
+<img data-src="img/c24_1.png" width="464" class="r-stretch"></section>
 <section id="c24-mea-culpa-2" class="slide level2">
 <h2>C24 (mea culpa)</h2>
 <p>Ligne de header doublonné</p>
 
-<img data-src="assets/c24_2.png" width="464" class="r-stretch"></section>
+<img data-src="img/c24_2.png" width="464" class="r-stretch"></section>
 <section id="c24-mea-culpa-3" class="slide level2">
 <h2>C24 (mea culpa)</h2>
 <p>Un onglet par année (mais tous pareil) + un onglet de documentation</p>
 
-<img data-src="assets/c24_3.png" width="464" class="r-stretch"></section>
+<img data-src="img/c24_3.png" width="464" class="r-stretch"></section>
 <section id="c24-mea-culpa-4" class="slide level2">
 <h2>C24 (mea culpa)</h2>
 <p>Des données en bas que l’on ne souhaite pas</p>
@@ -683,13 +698,13 @@ Thomas Vroylandt, Kantiles
 <h2>Classique, fichier Insee</h2>
 <p>Aucune difficulté –&gt; inverser avec l’exemple d’avant ?</p>
 <p>Population active et taux d’activité au sens du recensement selon le sexe et l’âge en 2020 : comparaisons départementales</p>
-<p>https://www.insee.fr/fr/statistiques/2012710 (TCRD_015)</p>
+<p><a href="https://www.insee.fr/fr/statistiques/2012710"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i></a></p>
 
-<img data-src="assets/insee_activite_0.png" width="743" class="r-stretch"></section>
+<img data-src="img/insee_activite_0.png" width="743" class="r-stretch"></section>
 <section id="classique-fichier-insee-1" class="slide level2">
 <h2>Classique, fichier Insee</h2>
 
-<img data-src="assets/insee_activite_2.png" width="741" class="r-stretch"></section>
+<img data-src="img/insee_activite_2.png" width="741" class="r-stretch"></section>
 <section id="insee-tidyxl-unpivotr" class="slide level2">
 <h2>Insee tidyxl + unpivotr</h2>
 <div class="cell">
@@ -728,7 +743,7 @@ Thomas Vroylandt, Kantiles
 </section>
 <section id="faj---dernier-exemple-sur-le-sujet" class="slide level2">
 <h2>FAJ - Dernier exemple sur le sujet</h2>
-<p>https://data.drees.solidarites-sante.gouv.fr/explore/dataset/374_le-fond-d-aide-aux-jeunes-faj/information/</p>
+<p><a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/374_le-fond-d-aide-aux-jeunes-faj/information/"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i></a></p>
 <p>Cela fonctionne dans la plupart des cas assez bien, même avec des cellules fusionnées et d’autres non</p>
 <p>petite subtilité car tous les onglets ne commencent pas au même endroit et ne terminent pas au même endroit</p>
 <div class="cell">
@@ -833,11 +848,11 @@ Thomas Vroylandt, Kantiles
 </section>
 <section id="panorama-statistique" class="slide level2">
 <h2>Panorama statistique</h2>
-<p>https://drees.solidarites-sante.gouv.fr/sites/default/files/panorama/telechargement.htm</p>
+<p><a href="https://drees.solidarites-sante.gouv.fr/sites/default/files/panorama/telechargement.htm"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i></a></p>
 <p>démo pour le format sous une autre forme que le texte (gras, couleur)</p>
 <p>On va s’attacher à un seul tableau</p>
 
-<img data-src="assets/panorama_0.png" width="494" class="r-stretch"></section>
+<img data-src="img/panorama_0.png" width="494" class="r-stretch"></section>
 <section id="panorama-statistique-1" class="slide level2">
 <h2>Panorama statistique</h2>
 <div class="cell">
@@ -901,6 +916,55 @@ Thomas Vroylandt, Kantiles
 </section>
 <section id="questions" class="slide level2">
 <h2>Questions ?</h2>
+<div class="columns">
+<div class="column fragment fade-in-then-semi-out" style="width:50%;">
+<div class="small-box" style="background: #FE7920;">
+<p>Production statistique</p>
+</div>
+</div><div class="column fragment fade-in-then-semi-out" style="width:50%;">
+<div class="small-box" style="background: #074d60;">
+<p>Rapports statistiques</p>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column fragment fade-in-then-semi-out" style="width:50%;">
+<div class="small-box" style="background: #D93930;">
+<p>Politiques sociales et de l’emploi</p>
+</div>
+</div><div class="column fragment fade-in-then-semi-out" style="width:50%;">
+<div class="small-box" style="background: #008A71;">
+<p>Handicap</p>
+</div>
+</div>
+</div>
+</section>
+<section id="caractéristiques" class="slide level2">
+<h2>Caractéristiques</h2>
+<div class="wide-box fragment fade-in">
+<p><i class="fa-solid fa-circle-chevron-down fa-xl" aria-label="circle-chevron-down"></i></p>
+<p>Récupération des données</p>
+</div>
+<div class="wide-box fragment fade-in">
+<p><i class="fa-solid fa-circle-chevron-down fa-xl" aria-label="circle-chevron-down"></i></p>
+<p>Calcul des indicateurs</p>
+</div>
+<div class="wide-box fragment fade-in">
+<p><i class="fa-solid fa-circle-chevron-down fa-xl" aria-label="circle-chevron-down"></i></p>
+<p>Mise en forme des fichiers</p>
+</div>
+<div class="wide-box fragment fade-in">
+<p><i class="fa-solid fa-circle-chevron-down fa-xl" aria-label="circle-chevron-down"></i></p>
+<p>Validation</p>
+</div>
+<div class="wide-box fragment fade-in">
+<p><i class="fa-solid fa-circle-chevron-down fa-xl" aria-label="circle-chevron-down"></i></p>
+<p>Documentation</p>
+</div>
+<div class="wide-box fragment fade-in">
+<p><i class="fa-solid fa-circle-chevron-down fa-xl" aria-label="circle-chevron-down"></i></p>
+<p>Mise en ligne</p>
+</div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 

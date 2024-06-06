@@ -1,47 +1,59 @@
 ---
-title: "Un petit coup de polish - Nettoyage de fichiers Excel avec R"
+title: "Un petit coup de polish Nettoyage de fichiers Excel avec R"
 subtitle: "Rencontres R 2024"
 author: "Thomas Vroylandt, Kantiles"
 format: 
-  revealjs
-title-slide-attributes:
-  data-background-image: oss117_excel.jpeg
-  data-background-size: cover
+  revealjs:
+    theme: "assets/custom.scss"
+filters: [assets/bg_inverse.lua]
 execute: 
   echo: true
 ---
 
 QR code vers repo
 
-## A propos
+plutôt dans le README
 
-Thomas Vroylandt
+![](img/oss117_excel.jpeg){width="150"}
 
-Kantiles
+## Qui suis-je ?
 
-thomas@kantiles.com
+:::: {.columns}
+::: {.column width="40%" .fragment .fade-in}
 
-www.kantiles.com
+:::{.small-box-img}
 
-personal
+![](img/thomas.jpeg){.round-img}
+:::
 
-Cas réels, principalement dans le cadre de le production d'indicateurs pour un client de la stat publique
+**Thomas Vroylandt**
+
+Associé (Kantiles)
+[thomas@kantiles.com](mailto:thomas@kantiles.com)
+:::
+
+::: {.column width="60%" .fragment .fade-in}
+
+- Rapports statistiques
+- Chaîne de production
+- Politiques sociales et de l'emploi
+
+{{< fa arrow-right >}} Cas réels, dans le cadre de production d'indicateurs pour un service statistique ministériel
+
+:::
+::::
 
 ## Que demande le peuple ?
 
-```{r}
-#| echo: false
-knitr::include_graphics("assets/tidydata.jpeg")
-```
+![](img/tidydata.jpeg){width="320"}
 
-Source : Allison Horst, https://openscapes.org/blog/2020-10-12-tidy-data/
+:::source
+Source : Allison Horst [{{< fa paperclip >}}](https://openscapes.org/blog/2020-10-12-tidy-data/)
+:::
 
 ## De l'autre côté du miroir
 
-```{r}
-#| echo: false
-knitr::include_graphics("assets/excel_meme.jpeg")
-```
+![](img/excel_meme.jpeg){width="320"}
 
 ## De l'autre côté du miroir
 
@@ -61,13 +73,13 @@ Mais plutôt des solutions à appliquer en fonction des fichiers et de ce que l'
 
 tidyverse pour le général
 
-readxl https://readxl.tidyverse.org/ --> lecture d'un seul onglet, plutôt pour les cas simples, gère les range, geometry rectangulaire
+[`readxl`](https://readxl.tidyverse.org/) --> lecture d'un seul onglet, plutôt pour les cas simples, gère les range, geometry rectangulaire
 
-tidyxl https://github.com/nacnudus/tidyxl/ --> gère tout, mais degré d'abstraction supplémentaire, mais logique plus manipulation de données, et moins import
+[`tidyxl`](https://github.com/nacnudus/tidyxl/)   --> gère tout, mais degré d'abstraction supplémentaire, mais logique plus manipulation de données, et moins import
 
-unpivotr https://github.com/nacnudus/unpivotr/ --> prend en entrée un fichier ouvert avec tidyxl
+[`unpivotr`](https://github.com/nacnudus/unpivotr/)  --> prend en entrée un fichier ouvert avec tidyxl
 
-et bien d'autres (openxlsx2 https://github.com/JanMarvin/openxlsx2 )
+et bien d'autres (  [`openxlsx2`](https://github.com/JanMarvin/openxlsx2 ) )
 
 Notamment pour écrire des données, mais cela ne sera pas traité ici (openxlsx2)
 
@@ -84,15 +96,13 @@ library(unpivotr)
 
 ```{r}
 #| echo: false
-knitr::include_graphics("assets/c24_0.png")
+knitr::include_graphics("img/c24_0.png")
 ```
 
 Drees - contient la répartition par âge de la mère des naissances
 
-Page : https://data.drees.solidarites-sante.gouv.fr/explore/dataset/601_indicateurs-de-contexte/information/
-
-Lien direct : https://data.drees.solidarites-sante.gouv.fr/api/datasets/1.0/601_indicateurs-de-contexte/attachments/c24_isd_part_accouchements_selon_age_mere_xlsx/
-
+Page : 
+[{{< fa paperclip >}}](https://data.drees.solidarites-sante.gouv.fr/explore/dataset/601_indicateurs-de-contexte/information/)
 
 ## C24 (mea culpa)
 
@@ -100,7 +110,7 @@ Range décalé
 
 ```{r}
 #| echo: false
-knitr::include_graphics("assets/c24_1.png")
+knitr::include_graphics("img/c24_1.png")
 ```
 
 ## C24 (mea culpa)
@@ -109,7 +119,7 @@ Ligne de header doublonné
 
 ```{r}
 #| echo: false
-knitr::include_graphics("assets/c24_2.png")
+knitr::include_graphics("img/c24_2.png")
 ```
 
 ## C24 (mea culpa)
@@ -118,7 +128,7 @@ Un onglet par année (mais tous pareil) + un onglet de documentation
 
 ```{r}
 #| echo: false
-knitr::include_graphics("assets/c24_3.png")
+knitr::include_graphics("img/c24_3.png")
 ```
 
 ## C24 (mea culpa)
@@ -282,18 +292,19 @@ Aucune difficulté --> inverser avec l'exemple d'avant ?
 
 Population active et taux d'activité au sens du recensement selon le sexe et l'âge en 2020 : comparaisons départementales
 
-https://www.insee.fr/fr/statistiques/2012710 (TCRD_015)
+[{{< fa paperclip >}}](https://www.insee.fr/fr/statistiques/2012710)
+
 
 ```{r}
 #| echo: false
-knitr::include_graphics("assets/insee_activite_0.png")
+knitr::include_graphics("img/insee_activite_0.png")
 ```
 
 ## Classique, fichier Insee
 
 ```{r}
 #| echo: false
-knitr::include_graphics("assets/insee_activite_2.png")
+knitr::include_graphics("img/insee_activite_2.png")
 ```
 
 ## Insee tidyxl + unpivotr
@@ -317,7 +328,7 @@ le montrer
 
 ## FAJ - Dernier exemple sur le sujet
 
-https://data.drees.solidarites-sante.gouv.fr/explore/dataset/374_le-fond-d-aide-aux-jeunes-faj/information/
+[{{< fa paperclip >}}](https://data.drees.solidarites-sante.gouv.fr/explore/dataset/374_le-fond-d-aide-aux-jeunes-faj/information/)
 
 Cela fonctionne dans la plupart des cas assez bien, même avec des cellules fusionnées et d'autres non
 
@@ -396,7 +407,7 @@ map(
 
 ## Panorama statistique
 
-https://drees.solidarites-sante.gouv.fr/sites/default/files/panorama/telechargement.htm
+[{{< fa paperclip >}}](https://drees.solidarites-sante.gouv.fr/sites/default/files/panorama/telechargement.htm)
 
 démo pour le format sous une autre forme que le texte (gras, couleur)
 
@@ -404,7 +415,7 @@ On va s'attacher à un seul tableau
 
 ```{r}
 #| echo: false
-knitr::include_graphics("assets/panorama_0.png")
+knitr::include_graphics("img/panorama_0.png")
 ```
 
 ## Panorama statistique
@@ -453,3 +464,62 @@ df_panorama_cleaned
 ## Questions ?
 
 
+
+:::: {.columns}
+
+::: {.column width="50%" .fragment .fade-in-then-semi-out}
+::: {.small-box style="background: #FE7920;"}
+Production statistique
+:::
+:::
+
+::: {.column width="50%" .fragment .fade-in-then-semi-out}
+::: {.small-box style="background: #074d60;"}
+Rapports statistiques
+:::
+:::
+
+::::
+
+:::: {.columns}
+::: {.column width="50%" .fragment .fade-in-then-semi-out}
+::: {.small-box style="background: #D93930;"}
+Politiques sociales et de l'emploi
+:::
+:::
+
+::: {.column width="50%" .fragment .fade-in-then-semi-out}
+::: {.small-box style="background: #008A71;"}
+Handicap
+:::
+:::
+
+::::
+
+## Caractéristiques
+
+::: {.wide-box .fragment .fade-in}
+{{< fa circle-chevron-down size=xl >}}
+Récupération des données
+:::
+::: {.wide-box .fragment .fade-in}
+{{< fa circle-chevron-down size=xl >}}
+Calcul des indicateurs
+:::
+::: {.wide-box .fragment .fade-in}
+{{< fa circle-chevron-down size=xl >}}
+Mise en forme des fichiers
+:::
+::: {.wide-box .fragment .fade-in}
+{{< fa circle-chevron-down size=xl >}}
+Validation
+:::
+::: {.wide-box .fragment .fade-in}
+{{< fa circle-chevron-down size=xl >}}
+Documentation
+:::
+::: {.wide-box .fragment .fade-in}
+{{< fa circle-chevron-down size=xl >}}
+Mise en ligne
+:::
+   
