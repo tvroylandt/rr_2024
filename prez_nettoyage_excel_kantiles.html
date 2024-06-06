@@ -833,18 +833,70 @@ Thomas Vroylandt, Kantiles
 </section>
 <section id="panorama-statistique" class="slide level2">
 <h2>Panorama statistique</h2>
+<p>https://drees.solidarites-sante.gouv.fr/sites/default/files/panorama/telechargement.htm</p>
 <p>démo pour le format sous une autre forme que le texte (gras, couleur)</p>
-</section>
-<section id="all-in-one" class="slide level2">
-<h2>All in one</h2>
-<p>Panorama</p>
+<p>On va s’attacher à un seul tableau</p>
+
+<img data-src="assets/panorama_0.png" width="494" class="r-stretch"></section>
+<section id="panorama-statistique-1" class="slide level2">
+<h2>Panorama statistique</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>path_panorama <span class="ot">&lt;-</span> <span class="st">"data/PanoFrance2022.xlsx"</span></span>
+<span id="cb18-2"><a href=""></a></span>
+<span id="cb18-3"><a href=""></a><span class="co"># chargement des cellules + délimitation</span></span>
+<span id="cb18-4"><a href=""></a>df_cells_panorama <span class="ot">&lt;-</span> <span class="fu">xlsx_cells</span>(path_panorama) <span class="sc">|&gt;</span> </span>
+<span id="cb18-5"><a href=""></a>  <span class="fu">filter</span>(<span class="fu">between</span>(row, <span class="dv">330</span>, <span class="dv">355</span>))</span>
+<span id="cb18-6"><a href=""></a></span>
+<span id="cb18-7"><a href=""></a><span class="co"># et du format - liste</span></span>
+<span id="cb18-8"><a href=""></a>format_panorama <span class="ot">&lt;-</span> <span class="fu">xlsx_formats</span>(path_panorama)</span>
+<span id="cb18-9"><a href=""></a></span>
+<span id="cb18-10"><a href=""></a>df_panorama_cleaned <span class="ot">&lt;-</span> df_cells_panorama <span class="sc">|&gt;</span></span>
+<span id="cb18-11"><a href=""></a>  <span class="co"># il faudra gérer la fusion des codes géographiques à part</span></span>
+<span id="cb18-12"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"up"</span>, <span class="st">"code_geo"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-13"><a href=""></a>  <span class="co"># type d'établissement en gras - penser à indexer sur le type d'établissement</span></span>
+<span id="cb18-14"><a href=""></a>  <span class="fu">behead_if</span>(format_panorama<span class="sc">$</span>local<span class="sc">$</span>font<span class="sc">$</span>bold[local_format_id],</span>
+<span id="cb18-15"><a href=""></a>            <span class="at">direction =</span> <span class="st">"left-up"</span>,</span>
+<span id="cb18-16"><a href=""></a>            <span class="at">name =</span>  <span class="st">"type_etab"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-17"><a href=""></a>  <span class="fu">behead_if</span>(</span>
+<span id="cb18-18"><a href=""></a>    format_panorama<span class="sc">$</span>local<span class="sc">$</span>alignment<span class="sc">$</span>indent[local_format_id] <span class="sc">==</span> <span class="dv">2</span>,</span>
+<span id="cb18-19"><a href=""></a>    <span class="at">direction =</span> <span class="st">"left-up"</span>,</span>
+<span id="cb18-20"><a href=""></a>    <span class="at">name =</span>  <span class="st">"type_var"</span></span>
+<span id="cb18-21"><a href=""></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb18-22"><a href=""></a>  <span class="fu">behead_if</span>(</span>
+<span id="cb18-23"><a href=""></a>    format_panorama<span class="sc">$</span>local<span class="sc">$</span>alignment<span class="sc">$</span>indent[local_format_id] <span class="sc">==</span> <span class="dv">4</span>,</span>
+<span id="cb18-24"><a href=""></a>    <span class="at">direction =</span> <span class="st">"left"</span>,</span>
+<span id="cb18-25"><a href=""></a>    <span class="at">name =</span>  <span class="st">"type_places"</span></span>
+<span id="cb18-26"><a href=""></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb18-27"><a href=""></a>  <span class="fu">select</span>(code_geo, type_etab, type_var, type_places, numeric, character) <span class="sc">|&gt;</span> </span>
+<span id="cb18-28"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(numeric))</span>
+<span id="cb18-29"><a href=""></a></span>
+<span id="cb18-30"><a href=""></a>df_panorama_cleaned</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2,243 × 6
+   code_geo                   type_etab   type_var type_places numeric character
+   &lt;chr&gt;                      &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;    
+ 1 "AUVERGNE-\r\nRHÔNE-ALPES" Établissem… Nombre … &lt;NA&gt;            937 &lt;NA&gt;     
+ 2 "Ain"                      Établissem… Nombre … &lt;NA&gt;             67 &lt;NA&gt;     
+ 3 "Allier"                   Établissem… Nombre … &lt;NA&gt;             48 &lt;NA&gt;     
+ 4 "Ardèche"                  Établissem… Nombre … &lt;NA&gt;             65 &lt;NA&gt;     
+ 5 "Cantal"                   Établissem… Nombre … &lt;NA&gt;             40 &lt;NA&gt;     
+ 6 "Drôme"                    Établissem… Nombre … &lt;NA&gt;             68 &lt;NA&gt;     
+ 7 "Isère"                    Établissem… Nombre … &lt;NA&gt;            109 &lt;NA&gt;     
+ 8 "Loire"                    Établissem… Nombre … &lt;NA&gt;            112 &lt;NA&gt;     
+ 9 "Haute-Loire"              Établissem… Nombre … &lt;NA&gt;             49 &lt;NA&gt;     
+10 "Puy-de-Dôme"              Établissem… Nombre … &lt;NA&gt;             99 &lt;NA&gt;     
+# ℹ 2,233 more rows</code></pre>
+</div>
+</div>
 </section>
 <section id="quelques-astuces-1" class="slide level2">
 <h2>Quelques astuces</h2>
 <ul>
-<li>ne pas hésiter à coder à la main des choses, tout ne peut pas être automatisé</li>
+<li>ne pas hésiter à coder à la main des choses, tout ne peut pas être automatisé (enfin, tout peut l’être, mais il faut doser le coût-bénéfice)</li>
+<li>de façon générale, une formattage = un code</li>
 <li>faire plusieurs passes, par exemple pour se faire un fichier de référence des noms de colonnes utilisables derrière</li>
 <li>ce n’est que de la manip de données</li>
+<li>on peut aussi faire sur plusieurs fichiers Excel à la fois si ils sont formattés pareil</li>
 </ul>
 </section>
 <section id="questions" class="slide level2">

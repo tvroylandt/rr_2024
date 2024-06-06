@@ -400,15 +400,55 @@ https://drees.solidarites-sante.gouv.fr/sites/default/files/panorama/telechargem
 
 démo pour le format sous une autre forme que le texte (gras, couleur)
 
-## All in one
+On va s'attacher à un seul tableau
 
-Panorama
+```{r}
+#| echo: false
+knitr::include_graphics("assets/panorama_0.png")
+```
+
+## Panorama statistique
+
+```{r}
+path_panorama <- "data/PanoFrance2022.xlsx"
+
+# chargement des cellules + délimitation
+df_cells_panorama <- xlsx_cells(path_panorama) |> 
+  filter(between(row, 330, 355))
+
+# et du format - liste
+format_panorama <- xlsx_formats(path_panorama)
+
+df_panorama_cleaned <- df_cells_panorama |>
+  # il faudra gérer la fusion des codes géographiques à part
+  behead("up", "code_geo") |>
+  # type d'établissement en gras - penser à indexer sur le type d'établissement
+  behead_if(format_panorama$local$font$bold[local_format_id],
+            direction = "left-up",
+            name =  "type_etab") |>
+  behead_if(
+    format_panorama$local$alignment$indent[local_format_id] == 2,
+    direction = "left-up",
+    name =  "type_var"
+  ) |>
+  behead_if(
+    format_panorama$local$alignment$indent[local_format_id] == 4,
+    direction = "left",
+    name =  "type_places"
+  ) |>
+  select(code_geo, type_etab, type_var, type_places, numeric, character) |> 
+  filter(!is.na(numeric))
+
+df_panorama_cleaned
+```
 
 ## Quelques astuces
 
-- ne pas hésiter à coder à la main des choses, tout ne peut pas être automatisé
+- ne pas hésiter à coder à la main des choses, tout ne peut pas être automatisé (enfin, tout peut l'être, mais il faut doser le coût-bénéfice)
+- de façon générale, une formattage = un code
 - faire plusieurs passes, par exemple pour se faire un fichier de référence des noms de colonnes utilisables derrière
 - ce n'est que de la manip de données
+- on peut aussi faire sur plusieurs fichiers Excel à la fois si ils sont formattés pareil
 
 ## Questions ?
 
