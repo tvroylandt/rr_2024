@@ -405,12 +405,11 @@ Thomas Vroylandt, Kantiles
 </div>
 
 </section>
-<section class="slide level2">
+<section id="données-et-slides" class="slide level2">
+<h2>Données et slides</h2>
+<p><a href="https://github.com/tvroylandt/rr_2024"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i> https://github.com/tvroylandt/rr_2024</a></p>
 
-<p>QR code vers repo</p>
-<p>plutôt dans le README</p>
-
-<img data-src="img/oss117_excel.jpeg" width="150" class="r-stretch"></section>
+<img data-src="img/qr_code_rr_excel.png" class="r-stretch"></section>
 <section id="qui-suis-je" class="slide level2">
 <h2>Qui suis-je ?</h2>
 <div class="columns">
@@ -433,34 +432,27 @@ Thomas Vroylandt, Kantiles
 <section id="que-demande-le-peuple" class="slide level2">
 <h2>Que demande le peuple ?</h2>
 
-<img data-src="img/tidydata.jpeg" width="320" class="r-stretch"><div class="source">
+<img data-src="img/tidydata.jpeg" width="300" class="r-stretch"><div class="source">
 <p>Source : Allison Horst <a href="https://openscapes.org/blog/2020-10-12-tidy-data/"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i></a></p>
 </div>
 </section>
 <section id="de-lautre-côté-du-miroir" class="slide level2">
 <h2>De l’autre côté du miroir</h2>
 
-<img data-src="img/excel_meme.jpeg" width="320" class="r-stretch"></section>
+<img data-src="img/excel_meme.jpeg" width="300" class="r-stretch"></section>
 <section id="de-lautre-côté-du-miroir-1" class="slide level2">
 <h2>De l’autre côté du miroir</h2>
 <p>Une grande créativité dans les mises en forme des données !</p>
 <p>Captures d’écrans qui se superpose de fichiers Excel en bordel avec smileys de réactions</p>
 </section>
-<section id="comment-faire" class="slide level2">
-<h2>Comment faire ?</h2>
-<p>==&gt; Autant le dire de suite, il n’y a pas de solution générale</p>
-<p>=&gt; privilégier quand c’est possible d’autres exports (c’est souvent le cas notamment en open data avec le paramétrage OpenDataSoft qui force + parquet)</p>
-<p>Mais plutôt des solutions à appliquer en fonction des fichiers et de ce que l’on souhaite récupérer</p>
-</section>
-<section id="nos-outils" class="slide level2">
-<h2>Nos outils</h2>
-<p>tidyverse pour le général</p>
-<p><a href="https://readxl.tidyverse.org/"><code>readxl</code></a> –&gt; lecture d’un seul onglet, plutôt pour les cas simples, gère les range, geometry rectangulaire</p>
-<p><a href="https://github.com/nacnudus/tidyxl/"><code>tidyxl</code></a> –&gt; gère tout, mais degré d’abstraction supplémentaire, mais logique plus manipulation de données, et moins import</p>
-<p><a href="https://github.com/nacnudus/unpivotr/"><code>unpivotr</code></a> –&gt; prend en entrée un fichier ouvert avec tidyxl</p>
-<p>et bien d’autres ( <a href="https://github.com/JanMarvin/openxlsx2"><code>openxlsx2</code></a> )</p>
-<p>Notamment pour écrire des données, mais cela ne sera pas traité ici (openxlsx2)</p>
-<p>On va illustrer les différentes façon</p>
+<section id="boîte-à-outils" class="slide level2">
+<h2>Boîte à outils <i class="fa-solid fa-screwdriver-wrench" aria-label="screwdriver-wrench"></i></h2>
+<ul>
+<li><p><a href="https://readxl.tidyverse.org/"><code>readxl</code></a> : import de fichiers rectangulaires simples</p></li>
+<li><p><a href="https://github.com/nacnudus/tidyxl/"><code>tidyxl</code></a> : permet de transformer l’étape d’import en une étape de nettoyage de données</p></li>
+<li><p><a href="https://github.com/nacnudus/unpivotr/"><code>unpivotr</code></a> : complément de <code>tidyxl</code> pour le nettoyage</p></li>
+<li><p>A mentionner : <a href="https://github.com/JanMarvin/openxlsx2"><code>openxlsx2</code></a> (sert aussi en écriture)</p></li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href=""></a><span class="fu">library</span>(readxl)</span>
@@ -468,75 +460,125 @@ Thomas Vroylandt, Kantiles
 <span id="cb1-4"><a href=""></a><span class="fu">library</span>(unpivotr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="c24-mea-culpa" class="slide level2">
-<h2>C24 (mea culpa)</h2>
+<section id="insee---taux-dactivité" class="slide level2">
+<h2>Insee - Taux d’activité</h2>
+<p>Population active et taux d’activité au sens du recensement selon le sexe et l’âge en 2020 : comparaisons départementales <a href="https://www.insee.fr/fr/statistiques/2012710"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i></a></p>
 
-<img data-src="img/c24_0.png" width="464" class="r-stretch"><p>Drees - contient la répartition par âge de la mère des naissances</p>
-<p>Page : <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/601_indicateurs-de-contexte/information/"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i></a></p>
+<img data-src="img/insee_activite_0.png" width="300" class="r-stretch"></section>
+<section id="insee---taux-dactivité-1" class="slide level2">
+<h2>Insee - Taux d’activité</h2>
+<p>Intitulés des colonnes fusionnées</p>
+
+<img data-src="img/insee_activite_1.png" width="300" class="r-stretch"></section>
+<section id="insee---taux-dactivité-2" class="slide level2">
+<h2>Insee - Taux d’activité</h2>
+<p>Zone des données décalée</p>
+
+<img data-src="img/insee_activite_2.png" width="300" class="r-stretch"></section>
+<section id="insee---taux-dactivité---readxl" class="slide level2">
+<h2>Insee - Taux d’activité - <code>readxl</code></h2>
+<p>Option 1 en listant les noms de colonne</p>
 </section>
-<section id="c24-mea-culpa-1" class="slide level2">
-<h2>C24 (mea culpa)</h2>
-<p>Range décalé</p>
+<section id="insee---taux-dactivité---readxl-1" class="slide level2">
+<h2>Insee - Taux d’activité - <code>readxl</code></h2>
+<p>Option 2 en faisant deux passes comme dans la <a href="https://readxl.tidyverse.org/articles/multiple-header-rows.html">vignette</a></p>
+</section>
+<section id="insee---taux-dactivité---tidyxl-unpivotr" class="slide level2">
+<h2>Insee - Taux d’activité - <code>tidyxl</code> + <code>unpivotr</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">xlsx_cells</span>(<span class="st">"data/TCRD_015.xlsx"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href=""></a>  <span class="fu">filter</span>(sheet <span class="sc">==</span> <span class="st">"DEP"</span> <span class="sc">&amp;</span> row <span class="sc">&gt;=</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"up-left"</span>, <span class="st">"typ_var"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"up"</span>, <span class="st">"mod_var"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"left"</span>, <span class="st">"code_dep"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"left"</span>, <span class="st">"lib_dep"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href=""></a>  <span class="fu">select</span>(typ_var, mod_var, code_dep, lib_dep, numeric)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 918 × 5
+   typ_var                          mod_var  code_dep lib_dep            numeric
+   &lt;chr&gt;                            &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;                &lt;dbl&gt;
+ 1 Population active de 15 à 64 ans Ensemble 01       Ain                 320682
+ 2 Population active de 15 à 64 ans Hommes   01       Ain                 166687
+ 3 Population active de 15 à 64 ans Femmes   01       Ain                 153995
+ 4 Population active de 15 à 64 ans Ensemble 02       Aisne               233225
+ 5 Population active de 15 à 64 ans Hommes   02       Aisne               122874
+ 6 Population active de 15 à 64 ans Femmes   02       Aisne               110351
+ 7 Population active de 15 à 64 ans Ensemble 03       Allier              140547
+ 8 Population active de 15 à 64 ans Hommes   03       Allier               72050
+ 9 Population active de 15 à 64 ans Femmes   03       Allier               68497
+10 Population active de 15 à 64 ans Ensemble 04       Alpes-de-Haute-Pr…   71118
+# ℹ 908 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="drees---isd-c24" class="slide level2">
+<h2>Drees - ISD C24</h2>
+<p>Répartition des naissances par âge de la mère <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/601_indicateurs-de-contexte/information/"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i></a></p>
 
-<img data-src="img/c24_1.png" width="464" class="r-stretch"></section>
-<section id="c24-mea-culpa-2" class="slide level2">
-<h2>C24 (mea culpa)</h2>
-<p>Ligne de header doublonné</p>
+<img data-src="img/c24_0.png" width="300" class="r-stretch"></section>
+<section id="drees---isd-c24-1" class="slide level2">
+<h2>Drees - ISD C24</h2>
+<p>Début des données décalées</p>
 
-<img data-src="img/c24_2.png" width="464" class="r-stretch"></section>
-<section id="c24-mea-culpa-3" class="slide level2">
-<h2>C24 (mea culpa)</h2>
+<img data-src="img/c24_1.png" width="300" class="r-stretch"></section>
+<section id="drees---isd-c24-2" class="slide level2">
+<h2>Drees - ISD C24</h2>
+<p>Intitulés des colonnes fusionnées</p>
+
+<img data-src="img/c24_2.png" width="300" class="r-stretch"></section>
+<section id="drees---isd-c24-3" class="slide level2">
+<h2>Drees - ISD C24</h2>
 <p>Un onglet par année (mais tous pareil) + un onglet de documentation</p>
 
-<img data-src="img/c24_3.png" width="464" class="r-stretch"></section>
-<section id="c24-mea-culpa-4" class="slide level2">
-<h2>C24 (mea culpa)</h2>
-<p>Des données en bas que l’on ne souhaite pas</p>
-</section>
-<section id="une-proposition-avec-readxl" class="slide level2">
-<h2>une proposition avec readxl</h2>
+<img data-src="img/c24_3.png" width="300" class="r-stretch"></section>
+<section id="drees---isd-c24-4" class="slide level2">
+<h2>Drees - ISD C24</h2>
+<p>Des données à la fin que l’on ne souhaite pas importer</p>
+
+<img data-src="img/c24_4.png" width="300" class="r-stretch"></section>
+<section id="drees---isd-c24---readxl" class="slide level2">
+<h2>Drees - ISD C24 - <code>readxl</code></h2>
 <p>reprendre la fonction et ses arguments un par un</p>
 <p>faire avec code + résultat an face à face avec highlight</p>
 <p>sheet nommé ou en position range ou skip, ici on fait un skip et on gérera derrière, mais un range peut permettre de sortir direct les lignes du bas. Aussi n_max</p>
 <p>on peut aussi spécifier à la main un vecteur de noms, ou skip des colonnes avec col_types</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>path_c24 <span class="ot">&lt;-</span> <span class="st">"data/C24-ISD_Part_accouchements_selon_age_mere.xlsx"</span></span>
-<span id="cb2-2"><a href=""></a></span>
-<span id="cb2-3"><a href=""></a>df_c24_init <span class="ot">&lt;-</span></span>
-<span id="cb2-4"><a href=""></a>  <span class="fu">read_xlsx</span>(path_c24,</span>
-<span id="cb2-5"><a href=""></a>            <span class="at">sheet =</span> <span class="st">"2022"</span>,</span>
-<span id="cb2-6"><a href=""></a>            <span class="at">skip =</span> <span class="dv">5</span>,</span>
-<span id="cb2-7"><a href=""></a>            <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-8"><a href=""></a>  <span class="fu">rename</span>(<span class="at">code_dep =</span> ...<span class="dv">1</span>,</span>
-<span id="cb2-9"><a href=""></a>         <span class="at">lib_dep =</span> ...<span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-10"><a href=""></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(code_dep, lib_dep),</span>
-<span id="cb2-11"><a href=""></a>               <span class="at">names_to =</span> <span class="st">"age_mere"</span>,</span>
-<span id="cb2-12"><a href=""></a>               <span class="at">values_to =</span> <span class="st">"perc_naiss"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>path_c24 <span class="ot">&lt;-</span> <span class="st">"data/C24-ISD_Part_accouchements_selon_age_mere.xlsx"</span></span>
+<span id="cb4-2"><a href=""></a></span>
+<span id="cb4-3"><a href=""></a>df_c24_init <span class="ot">&lt;-</span></span>
+<span id="cb4-4"><a href=""></a>  <span class="fu">read_xlsx</span>(path_c24,</span>
+<span id="cb4-5"><a href=""></a>            <span class="at">sheet =</span> <span class="st">"2022"</span>,</span>
+<span id="cb4-6"><a href=""></a>            <span class="at">skip =</span> <span class="dv">5</span>,</span>
+<span id="cb4-7"><a href=""></a>            <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href=""></a>  <span class="fu">rename</span>(<span class="at">code_dep =</span> ...<span class="dv">1</span>,</span>
+<span id="cb4-9"><a href=""></a>         <span class="at">lib_dep =</span> ...<span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-10"><a href=""></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(code_dep, lib_dep),</span>
+<span id="cb4-11"><a href=""></a>               <span class="at">names_to =</span> <span class="st">"age_mere"</span>,</span>
+<span id="cb4-12"><a href=""></a>               <span class="at">values_to =</span> <span class="st">"perc_naiss"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="une-proposition-avec-readxl-1" class="slide level2">
-<h2>une proposition avec readxl</h2>
-<p>AStuce quand les headers sont inversés (exemple PA08) -&gt; https://readxl.tidyverse.org/articles/multiple-header-rows.html (ou avec slice)</p>
+<section id="drees---isd-c24---readxl-1" class="slide level2">
+<h2>Drees - ISD C24 - <code>readxl</code></h2>
 <p>Puis on fait une fonction sur les onglets On peut aussi gérer dans une custom fonction si on a du wrangling à faire avant Des fois il faut aussi passer un as.character sur l’ensemble avant le pivot puis gérer les cas</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>df_c24_full <span class="ot">&lt;-</span> <span class="fu">excel_sheets</span>(path_c24) <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href=""></a>  <span class="fu">set_names</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href=""></a>  <span class="co"># remove documentation sheet</span></span>
-<span id="cb3-4"><a href=""></a>  _[<span class="sc">-</span><span class="dv">12</span>] <span class="sc">|&gt;</span></span>
-<span id="cb3-5"><a href=""></a>  <span class="fu">map</span>(read_xlsx,</span>
-<span id="cb3-6"><a href=""></a>      <span class="at">path =</span> path_c24,</span>
-<span id="cb3-7"><a href=""></a>      <span class="at">skip =</span> <span class="dv">5</span>,</span>
-<span id="cb3-8"><a href=""></a>      <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-9"><a href=""></a>  <span class="fu">list_rbind</span>(<span class="at">names_to =</span> <span class="st">"annee"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-10"><a href=""></a>  <span class="fu">rename</span>(<span class="at">code_dep =</span> ...<span class="dv">1</span>,</span>
-<span id="cb3-11"><a href=""></a>         <span class="at">lib_dep =</span> ...<span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-12"><a href=""></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(annee, code_dep, lib_dep),</span>
-<span id="cb3-13"><a href=""></a>               <span class="at">names_to =</span> <span class="st">"age_mere"</span>,</span>
-<span id="cb3-14"><a href=""></a>               <span class="at">values_to =</span> <span class="st">"perc_naiss"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-15"><a href=""></a>  <span class="fu">mutate</span>( <span class="at">annee =</span> <span class="fu">as.numeric</span>(annee)) <span class="sc">|&gt;</span> </span>
-<span id="cb3-16"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(code_dep) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(perc_naiss) <span class="sc">&amp;</span> <span class="sc">!</span>code_dep <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"F"</span>, <span class="st">"M"</span>))</span>
-<span id="cb3-17"><a href=""></a></span>
-<span id="cb3-18"><a href=""></a>df_c24_full</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>df_c24_full <span class="ot">&lt;-</span> <span class="fu">excel_sheets</span>(path_c24) <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href=""></a>  <span class="fu">set_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href=""></a>  <span class="co"># remove documentation sheet</span></span>
+<span id="cb5-4"><a href=""></a>  _[<span class="sc">-</span><span class="dv">12</span>] <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href=""></a>  <span class="fu">map</span>(read_xlsx,</span>
+<span id="cb5-6"><a href=""></a>      <span class="at">path =</span> path_c24,</span>
+<span id="cb5-7"><a href=""></a>      <span class="at">skip =</span> <span class="dv">5</span>,</span>
+<span id="cb5-8"><a href=""></a>      <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-9"><a href=""></a>  <span class="fu">list_rbind</span>(<span class="at">names_to =</span> <span class="st">"annee"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-10"><a href=""></a>  <span class="fu">rename</span>(<span class="at">code_dep =</span> ...<span class="dv">1</span>,</span>
+<span id="cb5-11"><a href=""></a>         <span class="at">lib_dep =</span> ...<span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-12"><a href=""></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(annee, code_dep, lib_dep),</span>
+<span id="cb5-13"><a href=""></a>               <span class="at">names_to =</span> <span class="st">"age_mere"</span>,</span>
+<span id="cb5-14"><a href=""></a>               <span class="at">values_to =</span> <span class="st">"perc_naiss"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-15"><a href=""></a>  <span class="fu">mutate</span>( <span class="at">annee =</span> <span class="fu">as.numeric</span>(annee)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-16"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(code_dep) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(perc_naiss) <span class="sc">&amp;</span> <span class="sc">!</span>code_dep <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"F"</span>, <span class="st">"M"</span>))</span>
+<span id="cb5-17"><a href=""></a></span>
+<span id="cb5-18"><a href=""></a>df_c24_full</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6,732 × 5
    annee code_dep lib_dep age_mere       perc_naiss
@@ -555,12 +597,12 @@ Thomas Vroylandt, Kantiles
 </div>
 </div>
 </section>
-<section id="avec-tidyxl-unpivotr" class="slide level2">
-<h2>avec tidyxl + unpivotr</h2>
+<section id="drees---isd-c24---tidyxl" class="slide level2">
+<h2>Drees - ISD C24 - <code>tidyxl</code></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>df_cells_c24 <span class="ot">&lt;-</span> <span class="fu">xlsx_cells</span>(path_c24)</span>
-<span id="cb5-2"><a href=""></a></span>
-<span id="cb5-3"><a href=""></a>df_cells_c24</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>df_cells_c24 <span class="ot">&lt;-</span> <span class="fu">xlsx_cells</span>(path_c24)</span>
+<span id="cb7-2"><a href=""></a></span>
+<span id="cb7-3"><a href=""></a>df_cells_c24</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10,237 × 24
    sheet address   row   col is_blank content data_type error logical numeric
@@ -584,56 +626,56 @@ Thomas Vroylandt, Kantiles
 </div>
 </div>
 </section>
-<section id="avec-tidyxl-dplyrtidyr" class="slide level2">
-<h2>avec tidyxl + dplyr/tidyr</h2>
+<section id="drees---isd-c24---tidyxl-dplyrtidyr" class="slide level2">
+<h2>Drees - ISD C24 - <code>tidyxl</code> + <code>dplyr</code>/<code>tidyr</code></h2>
 <p>Soit on peut gérer à la main, en considérant que le contenu est numerique et le reste du character, on va fill puis pivot puis gérer sur les colonnes</p>
 <p>Un peu artisanal mais ça passe</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>df_c24_cells_full <span class="ot">&lt;-</span> df_cells_c24 <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href=""></a>  <span class="fu">filter</span>(sheet <span class="sc">!=</span> <span class="st">"Documentation"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href=""></a>  <span class="fu">filter</span>(row <span class="sc">&gt;=</span> <span class="dv">4</span> <span class="sc">&amp;</span> <span class="sc">!</span>is_blank <span class="sc">&amp;</span> col <span class="sc">!=</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href=""></a>  <span class="fu">select</span>(sheet, row, col, character, numeric) <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href=""></a>  <span class="co"># on construit lignes et colonnes</span></span>
-<span id="cb7-6"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">header_row =</span> <span class="fu">case_when</span>(row <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> character),</span>
-<span id="cb7-7"><a href=""></a>         <span class="at">code_dep =</span> <span class="fu">case_when</span>(col <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="fu">coalesce</span>(<span class="fu">as.character</span>(numeric), character))) <span class="sc">|&gt;</span></span>
-<span id="cb7-8"><a href=""></a>  <span class="co"># fill des colonnes</span></span>
-<span id="cb7-9"><a href=""></a>  <span class="fu">group_by</span>(col) <span class="sc">|&gt;</span></span>
-<span id="cb7-10"><a href=""></a>  <span class="fu">fill</span>(header_row, <span class="at">.direction =</span> <span class="st">"down"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-11"><a href=""></a>  <span class="co"># fill des codes dep</span></span>
-<span id="cb7-12"><a href=""></a>  <span class="fu">group_by</span>(row) <span class="sc">|&gt;</span></span>
-<span id="cb7-13"><a href=""></a>  <span class="fu">fill</span>(code_dep, <span class="at">.direction =</span> <span class="st">"down"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-14"><a href=""></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-15"><a href=""></a>  <span class="co"># on filtre</span></span>
-<span id="cb7-16"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(numeric) <span class="sc">&amp;</span></span>
-<span id="cb7-17"><a href=""></a>           <span class="sc">!</span><span class="fu">is.na</span>(code_dep) <span class="sc">&amp;</span></span>
-<span id="cb7-18"><a href=""></a>           <span class="sc">!</span><span class="fu">is.na</span>(header_row) <span class="sc">&amp;</span> <span class="sc">!</span>code_dep <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"F"</span>, <span class="st">"M"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-19"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">sheet =</span> <span class="fu">as.numeric</span>(sheet),</span>
-<span id="cb7-20"><a href=""></a>         <span class="at">header_row =</span> <span class="fu">str_trim</span>(header_row)) <span class="sc">|&gt;</span></span>
-<span id="cb7-21"><a href=""></a>  <span class="fu">select</span>(<span class="at">annee =</span> sheet,</span>
-<span id="cb7-22"><a href=""></a>         code_dep,</span>
-<span id="cb7-23"><a href=""></a>         <span class="at">age_mere =</span> header_row,</span>
-<span id="cb7-24"><a href=""></a>         <span class="at">perc_naiss =</span> numeric)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>df_c24_cells_full <span class="ot">&lt;-</span> df_cells_c24 <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href=""></a>  <span class="fu">filter</span>(sheet <span class="sc">!=</span> <span class="st">"Documentation"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href=""></a>  <span class="fu">filter</span>(row <span class="sc">&gt;=</span> <span class="dv">4</span> <span class="sc">&amp;</span> <span class="sc">!</span>is_blank <span class="sc">&amp;</span> col <span class="sc">!=</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href=""></a>  <span class="fu">select</span>(sheet, row, col, character, numeric) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href=""></a>  <span class="co"># on construit lignes et colonnes</span></span>
+<span id="cb9-6"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">header_row =</span> <span class="fu">case_when</span>(row <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> character),</span>
+<span id="cb9-7"><a href=""></a>         <span class="at">code_dep =</span> <span class="fu">case_when</span>(col <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="fu">coalesce</span>(<span class="fu">as.character</span>(numeric), character))) <span class="sc">|&gt;</span></span>
+<span id="cb9-8"><a href=""></a>  <span class="co"># fill des colonnes</span></span>
+<span id="cb9-9"><a href=""></a>  <span class="fu">group_by</span>(col) <span class="sc">|&gt;</span></span>
+<span id="cb9-10"><a href=""></a>  <span class="fu">fill</span>(header_row, <span class="at">.direction =</span> <span class="st">"down"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-11"><a href=""></a>  <span class="co"># fill des codes dep</span></span>
+<span id="cb9-12"><a href=""></a>  <span class="fu">group_by</span>(row) <span class="sc">|&gt;</span></span>
+<span id="cb9-13"><a href=""></a>  <span class="fu">fill</span>(code_dep, <span class="at">.direction =</span> <span class="st">"down"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-14"><a href=""></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-15"><a href=""></a>  <span class="co"># on filtre</span></span>
+<span id="cb9-16"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(numeric) <span class="sc">&amp;</span></span>
+<span id="cb9-17"><a href=""></a>           <span class="sc">!</span><span class="fu">is.na</span>(code_dep) <span class="sc">&amp;</span></span>
+<span id="cb9-18"><a href=""></a>           <span class="sc">!</span><span class="fu">is.na</span>(header_row) <span class="sc">&amp;</span> <span class="sc">!</span>code_dep <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"F"</span>, <span class="st">"M"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-19"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">sheet =</span> <span class="fu">as.numeric</span>(sheet),</span>
+<span id="cb9-20"><a href=""></a>         <span class="at">header_row =</span> <span class="fu">str_trim</span>(header_row)) <span class="sc">|&gt;</span></span>
+<span id="cb9-21"><a href=""></a>  <span class="fu">select</span>(<span class="at">annee =</span> sheet,</span>
+<span id="cb9-22"><a href=""></a>         code_dep,</span>
+<span id="cb9-23"><a href=""></a>         <span class="at">age_mere =</span> header_row,</span>
+<span id="cb9-24"><a href=""></a>         <span class="at">perc_naiss =</span> numeric)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="avec-tidyxl-unpivotr-1" class="slide level2">
-<h2>avec tidyxl + unpivotr</h2>
+<section id="drees---isd-c24---tidyxl-unpivotr" class="slide level2">
+<h2>Drees - ISD C24 - <code>tidyxl</code> + <code>unpivotr</code></h2>
 <p>penser à grouper par onglet</p>
 <p>-&gt; fonctions très puissantes mais pas toujours faciles à manipuler</p>
 <p>up-left car une cellule fusionnée ne remplit en fait que la première valeur en haut à gauche -&gt; exemple capture d’écran</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>df_cells_c24 <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href=""></a>  <span class="fu">filter</span>(row <span class="sc">&gt;=</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href=""></a>  <span class="fu">group_by</span>(sheet) <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"up-left"</span>, <span class="st">"typ_var"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-5"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"up"</span>, <span class="st">"mod_var"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-6"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"left"</span>, <span class="st">"code_dep"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-7"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"left"</span>, <span class="st">"lib_dep"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-8"><a href=""></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-9"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">mod_var =</span> <span class="fu">str_trim</span>(mod_var)) <span class="sc">|&gt;</span> </span>
-<span id="cb8-10"><a href=""></a>  <span class="fu">select</span>(sheet, typ_var, mod_var, code_dep, lib_dep, numeric) <span class="sc">|&gt;</span></span>
-<span id="cb8-11"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(code_dep) <span class="sc">&amp;</span></span>
-<span id="cb8-12"><a href=""></a>           <span class="sc">!</span>code_dep <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"F"</span>, <span class="st">"M"</span>) <span class="sc">&amp;</span></span>
-<span id="cb8-13"><a href=""></a>           <span class="sc">!</span><span class="fu">is.na</span>(numeric)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>df_cells_c24 <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href=""></a>  <span class="fu">filter</span>(row <span class="sc">&gt;=</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href=""></a>  <span class="fu">group_by</span>(sheet) <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"up-left"</span>, <span class="st">"typ_var"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-5"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"up"</span>, <span class="st">"mod_var"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-6"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"left"</span>, <span class="st">"code_dep"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-7"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"left"</span>, <span class="st">"lib_dep"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-8"><a href=""></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-9"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">mod_var =</span> <span class="fu">str_trim</span>(mod_var)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-10"><a href=""></a>  <span class="fu">select</span>(sheet, typ_var, mod_var, code_dep, lib_dep, numeric) <span class="sc">|&gt;</span></span>
+<span id="cb10-11"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(code_dep) <span class="sc">&amp;</span></span>
+<span id="cb10-12"><a href=""></a>           <span class="sc">!</span>code_dep <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"F"</span>, <span class="st">"M"</span>) <span class="sc">&amp;</span></span>
+<span id="cb10-13"><a href=""></a>           <span class="sc">!</span><span class="fu">is.na</span>(numeric)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6,732 × 6
    sheet typ_var                          mod_var       code_dep lib_dep numeric
@@ -653,12 +695,10 @@ Thomas Vroylandt, Kantiles
 </div>
 <p>Faire des schéma étapes par étape</p>
 </section>
-<section id="résultat" class="slide level2">
-<h2>Résultat</h2>
-<p>Lien demo-isd + iframe, ou capture d’écran et lien</p>
-<iframe src="https://kantiles.github.io/demo_isd/main.html">
+<section id="résultat-avec-observable" class="slide level2">
+<h2>Résultat, avec Observable <a href="https://github.com/kantiles/demo_isd"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i></a></h2>
+<iframe src="https://kantiles.github.io/demo_isd/main.html" width="1200" height="700">
 </iframe>
-<p>https://github.com/kantiles/demo_isd</p>
 </section>
 <section id="quelques-astuces" class="slide level2">
 <h2>Quelques astuces</h2>
@@ -669,13 +709,13 @@ Thomas Vroylandt, Kantiles
 </ul>
 <p>exemple pour récupérer les dates de MAJ de chaque onglet</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>df_cells_c24 <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href=""></a>  <span class="fu">select</span>(sheet, character) <span class="sc">|&gt;</span></span>
-<span id="cb10-3"><a href=""></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(character, <span class="st">"mise à jour"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb10-4"><a href=""></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-5"><a href=""></a>    <span class="at">date_maj =</span> <span class="fu">str_remove</span>(character, <span class="st">"Date de mise à jour : "</span>),</span>
-<span id="cb10-6"><a href=""></a>    <span class="at">date_maj =</span> <span class="fu">dmy</span>(date_maj)</span>
-<span id="cb10-7"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>df_cells_c24 <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href=""></a>  <span class="fu">select</span>(sheet, character) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href=""></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(character, <span class="st">"mise à jour"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href=""></a>  <span class="fu">mutate</span>(</span>
+<span id="cb12-5"><a href=""></a>    <span class="at">date_maj =</span> <span class="fu">str_remove</span>(character, <span class="st">"Date de mise à jour : "</span>),</span>
+<span id="cb12-6"><a href=""></a>    <span class="at">date_maj =</span> <span class="fu">dmy</span>(date_maj)</span>
+<span id="cb12-7"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 11 × 3
    sheet character                        date_maj  
@@ -693,53 +733,6 @@ Thomas Vroylandt, Kantiles
 11 2012  Date de mise à jour : 29/03/2019 2019-03-29</code></pre>
 </div>
 </div>
-</section>
-<section id="classique-fichier-insee" class="slide level2">
-<h2>Classique, fichier Insee</h2>
-<p>Aucune difficulté –&gt; inverser avec l’exemple d’avant ?</p>
-<p>Population active et taux d’activité au sens du recensement selon le sexe et l’âge en 2020 : comparaisons départementales</p>
-<p><a href="https://www.insee.fr/fr/statistiques/2012710"><i class="fa-solid fa-paperclip" aria-label="paperclip"></i></a></p>
-
-<img data-src="img/insee_activite_0.png" width="743" class="r-stretch"></section>
-<section id="classique-fichier-insee-1" class="slide level2">
-<h2>Classique, fichier Insee</h2>
-
-<img data-src="img/insee_activite_2.png" width="741" class="r-stretch"></section>
-<section id="insee-tidyxl-unpivotr" class="slide level2">
-<h2>Insee tidyxl + unpivotr</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">xlsx_cells</span>(<span class="st">"data/TCRD_015.xlsx"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href=""></a>  <span class="fu">filter</span>(sheet <span class="sc">==</span> <span class="st">"DEP"</span> <span class="sc">&amp;</span> row <span class="sc">&gt;=</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"up-left"</span>, <span class="st">"typ_var"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"up"</span>, <span class="st">"mod_var"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-5"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"left"</span>, <span class="st">"code_dep"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-6"><a href=""></a>  <span class="fu">behead</span>(<span class="st">"left"</span>, <span class="st">"lib_dep"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-7"><a href=""></a>  <span class="fu">select</span>(typ_var, mod_var, code_dep, lib_dep, numeric)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 918 × 5
-   typ_var                          mod_var  code_dep lib_dep            numeric
-   &lt;chr&gt;                            &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;                &lt;dbl&gt;
- 1 Population active de 15 à 64 ans Ensemble 01       Ain                 320682
- 2 Population active de 15 à 64 ans Hommes   01       Ain                 166687
- 3 Population active de 15 à 64 ans Femmes   01       Ain                 153995
- 4 Population active de 15 à 64 ans Ensemble 02       Aisne               233225
- 5 Population active de 15 à 64 ans Hommes   02       Aisne               122874
- 6 Population active de 15 à 64 ans Femmes   02       Aisne               110351
- 7 Population active de 15 à 64 ans Ensemble 03       Allier              140547
- 8 Population active de 15 à 64 ans Hommes   03       Allier               72050
- 9 Population active de 15 à 64 ans Femmes   03       Allier               68497
-10 Population active de 15 à 64 ans Ensemble 04       Alpes-de-Haute-Pr…   71118
-# ℹ 908 more rows</code></pre>
-</div>
-</div>
-</section>
-<section id="autres-options" class="slide level2">
-<h2>Autres options</h2>
-<ul>
-<li>readxl en deux fois</li>
-<li>ou en nommant les colonnes et en faisant un range ou un skip = 5, plus artisanal mais aussi plus facile si on est moins à l’aise</li>
-</ul>
-<p>le montrer</p>
 </section>
 <section id="faj---dernier-exemple-sur-le-sujet" class="slide level2">
 <h2>FAJ - Dernier exemple sur le sujet</h2>
@@ -912,6 +905,7 @@ Thomas Vroylandt, Kantiles
 <li>faire plusieurs passes, par exemple pour se faire un fichier de référence des noms de colonnes utilisables derrière</li>
 <li>ce n’est que de la manip de données</li>
 <li>on peut aussi faire sur plusieurs fichiers Excel à la fois si ils sont formattés pareil</li>
+<li>privilégier quand c’est possible d’autres exports (c’est souvent le cas notamment en open data avec le paramétrage OpenDataSoft qui force + parquet)</li>
 </ul>
 </section>
 <section id="questions" class="slide level2">

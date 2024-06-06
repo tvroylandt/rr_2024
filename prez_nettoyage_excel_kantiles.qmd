@@ -8,13 +8,15 @@ format:
 filters: [assets/bg_inverse.lua]
 execute: 
   echo: true
+  message: false
+  warning: false
 ---
 
-QR code vers repo
+## Données et slides
 
-plutôt dans le README
+[{{< fa paperclip >}} https://github.com/tvroylandt/rr_2024](https://github.com/tvroylandt/rr_2024)
 
-![](img/oss117_excel.jpeg){width="150"}
+![](img/qr_code_rr_excel.png)
 
 ## Qui suis-je ?
 
@@ -45,7 +47,7 @@ Associé (Kantiles)
 
 ## Que demande le peuple ?
 
-![](img/tidydata.jpeg){width="320"}
+![](img/tidydata.jpeg){width="300"}
 
 :::source
 Source : Allison Horst [{{< fa paperclip >}}](https://openscapes.org/blog/2020-10-12-tidy-data/)
@@ -53,7 +55,7 @@ Source : Allison Horst [{{< fa paperclip >}}](https://openscapes.org/blog/2020-1
 
 ## De l'autre côté du miroir
 
-![](img/excel_meme.jpeg){width="320"}
+![](img/excel_meme.jpeg){width="300"}
 
 ## De l'autre côté du miroir
 
@@ -61,29 +63,15 @@ Une grande créativité dans les mises en forme des données !
 
 Captures d'écrans qui se superpose de fichiers Excel en bordel avec smileys de réactions
 
-## Comment faire ?
+## Boîte à outils {{< fa screwdriver-wrench >}}
 
-==> Autant le dire de suite, il n'y a pas de solution générale
+- [`readxl`](https://readxl.tidyverse.org/) : import de fichiers rectangulaires simples
 
-=> privilégier quand c'est possible d'autres exports (c'est souvent le cas notamment en open data avec le paramétrage OpenDataSoft qui force + parquet)
+- [`tidyxl`](https://github.com/nacnudus/tidyxl/) : permet de transformer l'étape d'import en une étape de nettoyage de données
 
-Mais plutôt des solutions à appliquer en fonction des fichiers et de ce que l'on souhaite récupérer
+- [`unpivotr`](https://github.com/nacnudus/unpivotr/) : complément de `tidyxl` pour le nettoyage
 
-## Nos outils
-
-tidyverse pour le général
-
-[`readxl`](https://readxl.tidyverse.org/) --> lecture d'un seul onglet, plutôt pour les cas simples, gère les range, geometry rectangulaire
-
-[`tidyxl`](https://github.com/nacnudus/tidyxl/)   --> gère tout, mais degré d'abstraction supplémentaire, mais logique plus manipulation de données, et moins import
-
-[`unpivotr`](https://github.com/nacnudus/unpivotr/)  --> prend en entrée un fichier ouvert avec tidyxl
-
-et bien d'autres (  [`openxlsx2`](https://github.com/JanMarvin/openxlsx2 ) )
-
-Notamment pour écrire des données, mais cela ne sera pas traité ici (openxlsx2)
-
-On va illustrer les différentes façon
+- A mentionner : [`openxlsx2`](https://github.com/JanMarvin/openxlsx2) (sert aussi en écriture)
 
 ```{r}
 library(tidyverse)
@@ -92,50 +80,76 @@ library(tidyxl)
 library(unpivotr)
 ```
 
-## C24 (mea culpa)
+
+## Insee - Taux d'activité
+
+Population active et taux d'activité au sens du recensement selon le sexe et l'âge en 2020 : comparaisons départementales [{{< fa paperclip >}}](https://www.insee.fr/fr/statistiques/2012710)
+
+![](img/insee_activite_0.png){width="300"}
+
+## Insee - Taux d'activité
+
+Intitulés des colonnes fusionnées
+
+![](img/insee_activite_1.png){width="300"}
+
+## Insee - Taux d'activité
+
+Zone des données décalée
+
+![](img/insee_activite_2.png){width="300"}
+
+## Insee - Taux d'activité - `readxl`
+
+Option 1 en listant les noms de colonne
+
+## Insee - Taux d'activité - `readxl`
+
+Option 2 en faisant deux passes comme dans la  [vignette](https://readxl.tidyverse.org/articles/multiple-header-rows.html)
+
+## Insee - Taux d'activité - `tidyxl` + `unpivotr`
 
 ```{r}
-#| echo: false
-knitr::include_graphics("img/c24_0.png")
+xlsx_cells("data/TCRD_015.xlsx") |>
+  filter(sheet == "DEP" & row >= 3) |>
+  behead("up-left", "typ_var") |>
+  behead("up", "mod_var") |>
+  behead("left", "code_dep") |>
+  behead("left", "lib_dep") |>
+  select(typ_var, mod_var, code_dep, lib_dep, numeric)
 ```
 
-Drees - contient la répartition par âge de la mère des naissances
+## Drees - ISD C24
 
-Page : 
-[{{< fa paperclip >}}](https://data.drees.solidarites-sante.gouv.fr/explore/dataset/601_indicateurs-de-contexte/information/)
+Répartition des naissances par âge de la mère [{{< fa paperclip >}}](https://data.drees.solidarites-sante.gouv.fr/explore/dataset/601_indicateurs-de-contexte/information/)
 
-## C24 (mea culpa)
+![](img/c24_0.png){width="300"}
 
-Range décalé
+## Drees - ISD C24
 
-```{r}
-#| echo: false
-knitr::include_graphics("img/c24_1.png")
-```
+Début des données décalées
 
-## C24 (mea culpa)
+![](img/c24_1.png){width="300"}
 
-Ligne de header doublonné
+## Drees - ISD C24
 
-```{r}
-#| echo: false
-knitr::include_graphics("img/c24_2.png")
-```
+Intitulés des colonnes fusionnées
 
-## C24 (mea culpa)
+![](img/c24_2.png){width="300"}
+
+## Drees - ISD C24
 
 Un onglet par année (mais tous pareil) + un onglet de documentation
 
-```{r}
-#| echo: false
-knitr::include_graphics("img/c24_3.png")
-```
+![](img/c24_3.png){width="300"}
 
-## C24 (mea culpa)
+## Drees - ISD C24
 
-Des données en bas que l'on ne souhaite pas
+Des données à la fin que l'on ne souhaite pas importer
 
-## une proposition avec readxl
+![](img/c24_4.png){width="300"}
+
+## Drees - ISD C24 - `readxl`
 
 reprendre la fonction et ses arguments un par un
 
@@ -162,9 +176,7 @@ df_c24_init <-
 
 ```
 
-## une proposition avec readxl
-
-AStuce quand les headers sont inversés (exemple PA08) -> https://readxl.tidyverse.org/articles/multiple-header-rows.html (ou avec slice)
+## Drees - ISD C24 - `readxl`
 
 Puis on fait une fonction sur les onglets
 On peut aussi gérer dans une custom fonction si on a du wrangling à faire avant
@@ -191,7 +203,7 @@ df_c24_full <- excel_sheets(path_c24) |>
 df_c24_full
 ```
 
-## avec tidyxl + unpivotr 
+## Drees - ISD C24 - `tidyxl`
 
 ```{r}
 df_cells_c24 <- xlsx_cells(path_c24)
@@ -199,7 +211,7 @@ df_cells_c24 <- xlsx_cells(path_c24)
 df_cells_c24
 ```
 
-## avec tidyxl + dplyr/tidyr 
+## Drees - ISD C24 - `tidyxl` + `dplyr`/`tidyr` 
 
 Soit on peut gérer à la main, en considérant que le contenu est numerique et le reste du character, on va fill puis pivot
 puis gérer sur les colonnes
@@ -233,7 +245,7 @@ df_c24_cells_full <- df_cells_c24 |>
          perc_naiss = numeric)
 ```
 
-## avec tidyxl + unpivotr 
+## Drees - ISD C24 - `tidyxl` + `unpivotr` 
 
 penser à grouper par onglet
 
@@ -260,13 +272,14 @@ df_cells_c24 |>
 
 Faire des schéma étapes par étape
 
-## Résultat
+Fira Code
+Importer les polices
+Mettre sur ipad
+Voir ce qu'on peut faire niveau code dans Quarto (extensions ?)
 
-Lien demo-isd + iframe, ou capture d'écran et lien
+## Résultat, avec Observable [{{< fa paperclip >}}](https://github.com/kantiles/demo_isd)
 
-<iframe src="https://kantiles.github.io/demo_isd/main.html"></iframe>
-
-https://github.com/kantiles/demo_isd
+<iframe src="https://kantiles.github.io/demo_isd/main.html"  width="1200" height="700"></iframe>
 
 ## Quelques astuces
 
@@ -285,46 +298,6 @@ df_cells_c24 |>
     date_maj = dmy(date_maj)
   )
 ```
-
-## Classique, fichier Insee
-
-Aucune difficulté --> inverser avec l'exemple d'avant ?
-
-Population active et taux d'activité au sens du recensement selon le sexe et l'âge en 2020 : comparaisons départementales
-
-[{{< fa paperclip >}}](https://www.insee.fr/fr/statistiques/2012710)
-
-
-```{r}
-#| echo: false
-knitr::include_graphics("img/insee_activite_0.png")
-```
-
-## Classique, fichier Insee
-
-```{r}
-#| echo: false
-knitr::include_graphics("img/insee_activite_2.png")
-```
-
-## Insee tidyxl + unpivotr
-
-```{r}
-xlsx_cells("data/TCRD_015.xlsx") |>
-  filter(sheet == "DEP" & row >= 3) |>
-  behead("up-left", "typ_var") |>
-  behead("up", "mod_var") |>
-  behead("left", "code_dep") |>
-  behead("left", "lib_dep") |>
-  select(typ_var, mod_var, code_dep, lib_dep, numeric)
-```
-
-## Autres options
-
-- readxl en deux fois
-- ou en nommant les colonnes et en faisant un range ou un skip = 5, plus artisanal mais aussi plus facile si on est moins à l'aise
-
-le montrer
 
 ## FAJ - Dernier exemple sur le sujet
 
@@ -460,6 +433,7 @@ df_panorama_cleaned
 - faire plusieurs passes, par exemple pour se faire un fichier de référence des noms de colonnes utilisables derrière
 - ce n'est que de la manip de données
 - on peut aussi faire sur plusieurs fichiers Excel à la fois si ils sont formattés pareil
+- privilégier quand c'est possible d'autres exports (c'est souvent le cas notamment en open data avec le paramétrage OpenDataSoft qui force + parquet)
 
 ## Questions ?
 
