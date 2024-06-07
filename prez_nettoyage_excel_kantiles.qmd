@@ -34,6 +34,10 @@ execute:
 
 Associé (Kantiles)
 [thomas@kantiles.com](mailto:thomas@kantiles.com)
+
+[{{< iconify fa6-brands github >}}](https://github.com/tvroylandt)
+[{{< iconify fa6-brands linkedin >}}](https://www.linkedin.com/in/thomas-vroylandt-9a2334190/)
+[{{< fa link >}}](https://tvroylandt.github.io/personal/)
 :::
 
 ::: {.column width="60%" .fragment .fade-in}
@@ -46,6 +50,8 @@ Associé (Kantiles)
 
 :::
 ::::
+
+# Notre sujet du jour
 
 ## Que demande le peuple ?
 
@@ -61,12 +67,29 @@ Source : Allison Horst [{{< fa paperclip >}}](https://openscapes.org/blog/2020-1
 
 ## De l'autre côté du miroir
 
-Une grande créativité dans les mises en forme des données !
+Une grande créativité dans les mises en forme !
 
-Captures d'écrans qui se superpose de fichiers Excel en bordel avec smileys de réactions
+:::r-stack
+:::fragment
+![](img/c24_0.png){width="700"}
+:::
+:::fragment
+![](img/defm.png){width="750"}
+:::
+:::fragment
+![](img/injep_vsc.png){width="775"}
+:::
+:::fragment
+![](img/panorama_0.png){width="800"}
+:::
+:::fragment
+![](img/insee_activite_0.png){width="850"}
+:::
+:::
 
 ## Boîte à outils {{< fa screwdriver-wrench >}}
 
+:::incremental
 - [`readxl`](https://readxl.tidyverse.org/) : import de fichiers rectangulaires simples
 
 - [`tidyxl`](https://github.com/nacnudus/tidyxl/) : permet de transformer l'étape d'import en une étape de nettoyage de données
@@ -74,14 +97,18 @@ Captures d'écrans qui se superpose de fichiers Excel en bordel avec smileys de 
 - [`unpivotr`](https://github.com/nacnudus/unpivotr/) : complément de `tidyxl` pour le nettoyage
 
 - A mentionner : [`openxlsx2`](https://github.com/JanMarvin/openxlsx2) (sert aussi en écriture)
+:::
 
+:::fragment
 ```{r}
 library(tidyverse)
 library(readxl)
 library(tidyxl)
 library(unpivotr)
 ```
+:::
 
+# Cas pratiques
 
 ## Insee - Taux d'activité
 
@@ -227,7 +254,6 @@ xlsx_cells(path_insee_activite) |>
   select(typ_var, mod_var, code_dep, lib_dep, numeric)
 ```
 
-
 ## Drees - ISD C24
 
 Répartition des naissances par âge de la mère [{{< fa paperclip >}}](https://data.drees.solidarites-sante.gouv.fr/explore/dataset/601_indicateurs-de-contexte/information/)
@@ -368,20 +394,22 @@ df_cells_c24 |>
            !is.na(numeric)) 
 ```
 
-## Résultat, avec Observable [{{< fa paperclip >}}](https://github.com/kantiles/demo_isd)
+## Astuces
 
-<iframe src="https://kantiles.github.io/demo_isd/main.html"  width="1200" height="800"></iframe>
+::: {.incremental}
+- on peut modifier le nombre de lignes à sauter par onglet (dans le `filter`), car les espacements ne sont pas toujours les mêmes d'une année sur l'autre
+- utiliser les fonctions de `dplyr` et `tidyr` comme `fill` ou `coalesce` en complément
+- on peut aussi appliquer à plusieurs fichiers Excel si les formats sont identiques
+:::
 
-## Quelques astuces
+## Astuces
 
-- on peut paramétriser le nombre de lignes à sauter par onglet (dans le filter), car cela arrive que les espacements ne soient pas les mêmes d'une année sur l'autre
-- penser à utiliser les fonctions de `dplyr` et `tidyr` comme `fill` ou `coalesce` en complément
-- séparer par bloc + faire des `str_detect`
-
-exemple pour récupérer les dates de MAJ de chaque onglet
+- récupérer d'autres informations avec `str_detect`, comme la date de mise à jour
 
 ```{r}
 #| code-line-numbers: "3"
+#| output: false
+
 df_cells_c24 |>
   select(sheet, character) |>
   filter(str_detect(character, "mise à jour")) |>
@@ -391,38 +419,72 @@ df_cells_c24 |>
   )
 ```
 
-## FAJ - Dernier exemple sur le sujet
+## Résultat, avec Observable [{{< fa paperclip >}}](https://github.com/kantiles/demo_isd)
 
-[{{< fa paperclip >}}](https://data.drees.solidarites-sante.gouv.fr/explore/dataset/374_le-fond-d-aide-aux-jeunes-faj/information/)
+<iframe src="https://kantiles.github.io/demo_isd/main.html"  width="1200" height="800"></iframe>
 
-Cela fonctionne dans la plupart des cas assez bien, même avec des cellules fusionnées et d'autres non
+## Drees - FAJ série
 
-petite subtilité car tous les onglets ne commencent pas au même endroit et ne terminent pas au même endroit
+Fond d'aide aux jeunes [{{< fa paperclip >}}](https://data.drees.solidarites-sante.gouv.fr/explore/dataset/374_le-fond-d-aide-aux-jeunes-faj/information/)
+
+![](img/faj_1.png){width="800"}
+
+Et des espacements différents, à détecter
+
+::: {layout-ncol=2}
+![](img/faj_2.png){width="500"}
+
+![](img/faj_3.png){width="500"}
+:::
+
+## Drees - FAJ série
 
 ```{r}
-df_cells_faj <- xlsx_cells("data/FAJ Données annuelles 2007-2022.xlsx") |>
-  # on filtre sur les onglets qui nous intéressent - on retire FAJ2015 qui a une structuration différente et qu'il faudrait traiter à part
+df_cells_faj <-
+  xlsx_cells("data/FAJ Données annuelles 2007-2022.xlsx") |>
   filter(str_sub(sheet, 1, 6) == "FAJ 20" & sheet != "FAJ 2015")
+```
 
-# ligne de début
+:::fragment
+
+Ligne de début - "Départements"
+
+```{r}
+#| code-line-numbers: "2"
+
 df_cells_faj_min <- df_cells_faj |> 
   filter(character == "Départements") |> 
   select(sheet, row_min = row)
+```
 
-# ligne de fin - on aurait aussi pu détecter La Réunion
+:::
+
+:::fragment
+
+Ligne de fin - ligne blanche vide
+
+```{r}
+#| code-line-numbers: 2|3|4|5-7|9
+
 df_cells_faj_max <- df_cells_faj |> 
   filter(is_blank & col == 1) |> 
   inner_join(df_cells_faj_min, by = join_by(sheet)) |> 
-  # on ajoute quelques lignes
   filter(row > row_min + 3) |> 
   group_by(sheet) |> 
   filter(row == min(row)) |>
   ungroup() |> 
   select(sheet, row_max = row) |>
-  # comme on a detecté la ligne blanche suivant la fin, on décale
   mutate(row_max = row_max - 1)
+```
 
-# on jointe pour cibler les tableaux
+:::
+
+## Drees - FAJ série
+
+```{r}
+#| code-line-numbers: 1-3|4|4|5-10
+#| output-location: fragment
+
 df_cells_faj |>
   inner_join(df_cells_faj_min, by = join_by(sheet)) |>
   inner_join(df_cells_faj_max, by = join_by(sheet)) |>
@@ -436,27 +498,43 @@ df_cells_faj |>
   select(sheet, typ_var, mod_var, code_dep, lib_dep, character, numeric)
 ```
 
-## En v2 FAJ - partitions
+## Drees - FAJ 2022
 
-Tab 2022 avec deux tabs dans le même --> séparation des tabs plutôt que de ne faire que le premier
+Deux tableaux dans le même onglet
 
-on va partitionner les cellules en tableaux, comme un nest, puis on va pouvoir soit travailler indépendemment, soit avec un map si la structure est similaire travailler le sujet
-
-pour cela, il va falloir délimiter, ici on va le faire par les en-têtes, mais cela peut aussi se faire avec une détection des blancs (mais plus complexe avec les cellules fusionnées)
+![](img/faj_partition_1.png){width="300"}
 
 ```{r}
 df_cells_faj_filtered <- df_cells_faj |>
   filter(sheet == "FAJ 2022" & row >= 9)
+```
 
+## Drees - FAJ 2022
+
+Détection des débuts de tableaux
+
+```{r}
 df_title_cells_faj <- df_cells_faj_filtered |>
   filter(character %in% c("Départements", "Métropoles et départements hors métropoles"))
+```
 
-# on partitionne
+:::fragment
+Partition ~ sorte de `nest`
+
+```{r}
 partitions_faj <- partition(df_cells_faj_filtered,
-          df_title_cells_faj)
+                            df_title_cells_faj)
+```
+:::
 
-# on reprendre le code du dessus
-# et on assemble
+## Drees - FAJ 2022
+
+Puis `map` (ou traitement séparé)
+
+```{r}
+#| code-line-numbers: 2|3-8|10|11
+#| output: false
+
 map(
   partitions_faj$cells,
   \(data) data |>
@@ -470,35 +548,54 @@ map(
   list_rbind(names_to = "type_geo")
 ```
 
-## Panorama statistique
+## Drees - Panorama statistique
 
-[{{< fa paperclip >}}](https://drees.solidarites-sante.gouv.fr/sites/default/files/panorama/telechargement.htm)
+Etablissements pour personnes âgées, tableau 17 [{{< fa paperclip >}}](https://drees.solidarites-sante.gouv.fr/sites/default/files/panorama/telechargement.htm)
 
-démo pour le format sous une autre forme que le texte (gras, couleur)
+![](img/panorama_0.png){width="300"}
 
-On va s'attacher à un seul tableau
+## Drees - Panorama statistique
+
+:::: {.columns}
+::: {.column width="40%"}
+
+De l'information stockée sous une autre forme que le test :
+
+- gras
+- indentation
+:::
+
+::: {.column width="60%"}
+
+![](img/panorama_1.png){width="600"}
+:::
+::::
+
+## Drees - Panorama statistique
+
+Chargement du contenu et du format de chaque cellule
 
 ```{r}
-#| echo: false
-knitr::include_graphics("img/panorama_0.png")
-```
+#| code-line-numbers: 1-4|6
 
-## Panorama statistique
-
-```{r}
 path_panorama <- "data/PanoFrance2022.xlsx"
 
-# chargement des cellules + délimitation
 df_cells_panorama <- xlsx_cells(path_panorama) |> 
   filter(between(row, 330, 355))
 
-# et du format - liste
 format_panorama <- xlsx_formats(path_panorama)
+```
 
-df_panorama_cleaned <- df_cells_panorama |>
-  # il faudra gérer la fusion des codes géographiques à part
+## Drees - Panorama statistique
+
+On utilise `unpivotr::behead_if`
+
+```{r}
+#| code-line-numbers: 2|3-5|6-9|10-13
+#| output-location: slide
+
+df_cells_panorama |>
   behead("up", "code_geo") |>
-  # type d'établissement en gras - penser à indexer sur le type d'établissement
   behead_if(format_panorama$local$font$bold[local_format_id],
             direction = "left-up",
             name =  "type_etab") |>
@@ -512,24 +609,21 @@ df_panorama_cleaned <- df_cells_panorama |>
     direction = "left",
     name =  "type_places"
   ) |>
-  select(code_geo, type_etab, type_var, type_places, numeric, character) |> 
+  select(code_geo, type_etab, type_var, type_places, numeric, character) |>
   filter(!is.na(numeric))
-
-df_panorama_cleaned
 ```
 
-## Quelques astuces
+# Conclusion
 
-- ne pas hésiter à coder à la main des choses, tout ne peut pas être automatisé (enfin, tout peut l'être, mais il faut doser le coût-bénéfice)
-- de façon générale, une formattage = un code
-- faire plusieurs passes, par exemple pour se faire un fichier de référence des noms de colonnes utilisables derrière
-- ce n'est que de la manip de données
-- on peut aussi faire sur plusieurs fichiers Excel à la fois si ils sont formattés pareil
-- privilégier quand c'est possible d'autres exports (c'est souvent le cas notamment en open data avec le paramétrage OpenDataSoft qui force + parquet)
+## Conclusion
 
-## Questions ?
+::: {.incremental}
+- L'import, avec `tidyxl` se résume souvent à de la manipulation de données
 
-- mettre des listes incrémentales
-- import des polices
-- slides inversées
-- vérif iPad
+- Chaque fichier Excel est unique !
+
+- Il faut rester pragmatique !
+:::
+
+# Quelles sont vos questions ?
+
