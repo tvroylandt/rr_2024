@@ -5,6 +5,8 @@ author: "Thomas Vroylandt, Kantiles"
 format: 
   revealjs:
     theme: "assets/custom.scss"
+    code-overflow: wrap
+    df-print: paged
 filters: [assets/bg_inverse.lua]
 execute: 
   echo: true
@@ -85,6 +87,10 @@ library(unpivotr)
 
 Population active et taux d'activité au sens du recensement selon le sexe et l'âge en 2020 : comparaisons départementales [{{< fa paperclip >}}](https://www.insee.fr/fr/statistiques/2012710)
 
+```{r}
+path_insee_activite <- "data/TCRD_015.xlsx"
+```
+
 ![](img/insee_activite_0.png){width="300"}
 
 ## Insee - Taux d'activité
@@ -101,16 +107,118 @@ Zone des données décalée
 
 ## Insee - Taux d'activité - `readxl`
 
-Option 1 en listant les noms de colonne
+En spécifiant les colonnes à la main
 
-## Insee - Taux d'activité - `readxl`
+```{r}
+#| code-line-numbers: 1-3|4|5-16
+#| output-location: slide
+read_xlsx(
+  path_insee_activite,
+  sheet = "DEP",
+  skip = 5,
+  col_names = c(
+    "code_dep",
+    "lib_dep",
+    "pop_active_tot",
+    "pop_activite_h",
+    "pop_active_f",
+    "tx_act_15_64",
+    "tx_act_25_54",
+    "tx_act_h_15_64",
+    "tx_act_h_25_54",
+    "tx_act_f_15_64",
+    "tx_act_f_25_54"
+  )
+)
+```
 
-Option 2 en faisant deux passes comme dans la  [vignette](https://readxl.tidyverse.org/articles/multiple-header-rows.html)
+## Insee - Taux d'activité - `tidyxl`
+
+`xlsx_cells` donne un `tibble` de la localisation et du contenu des cellules
+
+```{r}
+#| output-location: fragment
+
+xlsx_cells(path_insee_activite)
+```
+
+## Insee - Taux d'activité - `tidyxl` + `unpivotr`
+
+![](img/insee_activite_tidy_1.png){height="300"}
+
+```{r}
+#| output: false
+
+xlsx_cells(path_insee_activite) |>
+  filter(sheet == "DEP" & row >= 3)
+```
+
+## Insee - Taux d'activité - `tidyxl` + `unpivotr`
+
+![](img/insee_activite_tidy_2.png){height="300"}
+
+```{r}
+#| code-line-numbers: "3"
+#| output: false
+
+xlsx_cells(path_insee_activite) |>
+  filter(sheet == "DEP" & row >= 3) |>
+  behead("up-left", "typ_var")
+```
+
+{{< fa lightbulb >}} `up-left` car une cellule fusionnée ne remplit que le haut à gauche
+
+## Insee - Taux d'activité - `tidyxl` + `unpivotr`
+
+![](img/insee_activite_tidy_3.png){height="300"}
+
+```{r}
+#| code-line-numbers: "4"
+#| output: false
+
+xlsx_cells(path_insee_activite) |>
+  filter(sheet == "DEP" & row >= 3) |>
+  behead("up-left", "typ_var") |>
+  behead("up", "mod_var")
+```
+
+## Insee - Taux d'activité - `tidyxl` + `unpivotr`
+
+![](img/insee_activite_tidy_4.png){height="300"}
+
+```{r}
+#| code-line-numbers: "5"
+#| output: false
+
+xlsx_cells(path_insee_activite) |>
+  filter(sheet == "DEP" & row >= 3) |>
+  behead("up-left", "typ_var") |>
+  behead("up", "mod_var") |>
+  behead("left", "code_dep")
+```
+
+## Insee - Taux d'activité - `tidyxl` + `unpivotr`
+
+![](img/insee_activite_tidy_5.png){height="300"}
+
+```{r}
+#| code-line-numbers: "6"
+#| output: false
+
+xlsx_cells(path_insee_activite) |>
+  filter(sheet == "DEP" & row >= 3) |>
+  behead("up-left", "typ_var") |>
+  behead("up", "mod_var") |>
+  behead("left", "code_dep") |>
+  behead("left", "lib_dep")
+```
 
 ## Insee - Taux d'activité - `tidyxl` + `unpivotr`
 
 ```{r}
-xlsx_cells("data/TCRD_015.xlsx") |>
+#| output-location: fragment
+
+xlsx_cells(path_insee_activite) |>
   filter(sheet == "DEP" & row >= 3) |>
   behead("up-left", "typ_var") |>
   behead("up", "mod_var") |>
@@ -119,9 +227,14 @@ xlsx_cells("data/TCRD_015.xlsx") |>
   select(typ_var, mod_var, code_dep, lib_dep, numeric)
 ```
 
+
 ## Drees - ISD C24
 
 Répartition des naissances par âge de la mère [{{< fa paperclip >}}](https://data.drees.solidarites-sante.gouv.fr/explore/dataset/601_indicateurs-de-contexte/information/)
+
+```{r}
+path_c24 <- "data/C24-ISD_Part_accouchements_selon_age_mere.xlsx"
+```
 
 ![](img/c24_0.png){width="300"}
 
@@ -151,41 +264,32 @@ Des données à la fin que l'on ne souhaite pas importer
 
 ## Drees - ISD C24 - `readxl`
 
-reprendre la fonction et ses arguments un par un
-
-faire avec code + résultat an face à face avec highlight
-
-sheet nommé ou en position
-range ou skip, ici on fait un skip et on gérera derrière, mais un range peut permettre de sortir direct les lignes du bas. Aussi n_max
-
-on peut aussi spécifier à la main un vecteur de noms, ou skip des colonnes avec col_types
+On prend les colonnes telles quelles
 
 ```{r}
-path_c24 <- "data/C24-ISD_Part_accouchements_selon_age_mere.xlsx"
+#| code-line-numbers: 1-3|5-6|7-9
+#| output-location: fragment
 
-df_c24_init <-
-  read_xlsx(path_c24,
-            sheet = "2022",
-            skip = 5,
-            .name_repair = "unique_quiet") |>
+read_xlsx(path_c24,
+          sheet = "2022",
+          skip = 5,
+          .name_repair = "unique_quiet") |>
   rename(code_dep = ...1,
          lib_dep = ...2) |>
   pivot_longer(-c(code_dep, lib_dep),
                names_to = "age_mere",
                values_to = "perc_naiss")
-
 ```
 
 ## Drees - ISD C24 - `readxl`
 
-Puis on fait une fonction sur les onglets
-On peut aussi gérer dans une custom fonction si on a du wrangling à faire avant
-Des fois il faut aussi passer un as.character sur l'ensemble avant le pivot puis gérer les cas
+Idem sur les onglets dans un `map`
 
 ```{r}
-df_c24_full <- excel_sheets(path_c24) |>
+#| code-line-numbers: 1-2|3|4-7|8|9-17
+#| output-location: slide
+excel_sheets(path_c24) |>
   set_names() |>
-  # remove documentation sheet
   _[-12] |>
   map(read_xlsx,
       path = path_c24,
@@ -196,16 +300,18 @@ df_c24_full <- excel_sheets(path_c24) |>
          lib_dep = ...2) |>
   pivot_longer(-c(annee, code_dep, lib_dep),
                names_to = "age_mere",
-               values_to = "perc_naiss") |> 
-  mutate( annee = as.numeric(annee)) |> 
-  filter(!is.na(code_dep) & !is.na(perc_naiss) & !code_dep %in% c("F", "M"))
-
-df_c24_full
+               values_to = "perc_naiss") |>
+  mutate(annee = as.numeric(annee)) |>
+  filter(!is.na(code_dep) &
+           !is.na(perc_naiss) & 
+           !code_dep %in% c("F", "M"))
 ```
 
 ## Drees - ISD C24 - `tidyxl`
 
 ```{r}
+#| output-location: fragment
+
 df_cells_c24 <- xlsx_cells(path_c24)
 
 df_cells_c24
@@ -213,27 +319,21 @@ df_cells_c24
 
 ## Drees - ISD C24 - `tidyxl` + `dplyr`/`tidyr` 
 
-Soit on peut gérer à la main, en considérant que le contenu est numerique et le reste du character, on va fill puis pivot
-puis gérer sur les colonnes
-
-Un peu artisanal mais ça passe
-
 ```{r}
-df_c24_cells_full <- df_cells_c24 |>
+#| code-line-numbers: 1-4|5-6|7-8|9-10|12-14
+#| output: false
+
+df_cells_c24 |>
   filter(sheet != "Documentation") |>
   filter(row >= 4 & !is_blank & col != 2) |>
   select(sheet, row, col, character, numeric) |>
-  # on construit lignes et colonnes
   mutate(header_row = case_when(row == 6 ~ character),
          code_dep = case_when(col == 1 ~ coalesce(as.character(numeric), character))) |>
-  # fill des colonnes
   group_by(col) |>
   fill(header_row, .direction = "down") |>
-  # fill des codes dep
   group_by(row) |>
   fill(code_dep, .direction = "down") |>
   ungroup() |>
-  # on filtre
   filter(!is.na(numeric) &
            !is.na(code_dep) &
            !is.na(header_row) & !code_dep %in% c("F", "M")) |>
@@ -247,14 +347,12 @@ df_c24_cells_full <- df_cells_c24 |>
 
 ## Drees - ISD C24 - `tidyxl` + `unpivotr` 
 
-penser à grouper par onglet
-
--> fonctions très puissantes mais pas toujours faciles à manipuler
-
-up-left car une cellule fusionnée ne remplit en fait que la première valeur en haut à gauche
--> exemple capture d'écran
+{{< fa circle-exclamation >}} penser à grouper par onglet
 
 ```{r}
+#| code-line-numbers: 1-2|3|4-7|9-13
+#| output-location: slide
+
 df_cells_c24 |>
   filter(row >= 5) |>
   group_by(sheet) |>
@@ -263,23 +361,16 @@ df_cells_c24 |>
   behead("left", "code_dep") |>
   behead("left", "lib_dep") |>
   ungroup() |>
-  mutate(mod_var = str_trim(mod_var)) |> 
+  mutate(mod_var = str_trim(mod_var)) |>
   select(sheet, typ_var, mod_var, code_dep, lib_dep, numeric) |>
   filter(!is.na(code_dep) &
            !code_dep %in% c("F", "M") &
            !is.na(numeric)) 
 ```
 
-Faire des schéma étapes par étape
-
-Fira Code
-Importer les polices
-Mettre sur ipad
-Voir ce qu'on peut faire niveau code dans Quarto (extensions ?)
-
 ## Résultat, avec Observable [{{< fa paperclip >}}](https://github.com/kantiles/demo_isd)
 
-<iframe src="https://kantiles.github.io/demo_isd/main.html"  width="1200" height="700"></iframe>
+<iframe src="https://kantiles.github.io/demo_isd/main.html"  width="1200" height="800"></iframe>
 
 ## Quelques astuces
 
@@ -290,6 +381,7 @@ Voir ce qu'on peut faire niveau code dans Quarto (extensions ?)
 exemple pour récupérer les dates de MAJ de chaque onglet
 
 ```{r}
+#| code-line-numbers: "3"
 df_cells_c24 |>
   select(sheet, character) |>
   filter(str_detect(character, "mise à jour")) |>
@@ -437,63 +529,7 @@ df_panorama_cleaned
 
 ## Questions ?
 
-
-
-:::: {.columns}
-
-::: {.column width="50%" .fragment .fade-in-then-semi-out}
-::: {.small-box style="background: #FE7920;"}
-Production statistique
-:::
-:::
-
-::: {.column width="50%" .fragment .fade-in-then-semi-out}
-::: {.small-box style="background: #074d60;"}
-Rapports statistiques
-:::
-:::
-
-::::
-
-:::: {.columns}
-::: {.column width="50%" .fragment .fade-in-then-semi-out}
-::: {.small-box style="background: #D93930;"}
-Politiques sociales et de l'emploi
-:::
-:::
-
-::: {.column width="50%" .fragment .fade-in-then-semi-out}
-::: {.small-box style="background: #008A71;"}
-Handicap
-:::
-:::
-
-::::
-
-## Caractéristiques
-
-::: {.wide-box .fragment .fade-in}
-{{< fa circle-chevron-down size=xl >}}
-Récupération des données
-:::
-::: {.wide-box .fragment .fade-in}
-{{< fa circle-chevron-down size=xl >}}
-Calcul des indicateurs
-:::
-::: {.wide-box .fragment .fade-in}
-{{< fa circle-chevron-down size=xl >}}
-Mise en forme des fichiers
-:::
-::: {.wide-box .fragment .fade-in}
-{{< fa circle-chevron-down size=xl >}}
-Validation
-:::
-::: {.wide-box .fragment .fade-in}
-{{< fa circle-chevron-down size=xl >}}
-Documentation
-:::
-::: {.wide-box .fragment .fade-in}
-{{< fa circle-chevron-down size=xl >}}
-Mise en ligne
-:::
-   
+- mettre des listes incrémentales
+- import des polices
+- slides inversées
+- vérif iPad

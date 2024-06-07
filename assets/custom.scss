@@ -2,6 +2,7 @@
 
 // fonts
 $font-family-sans-serif: "Outfit" !default;
+$font-family-monospace: "Fira Code" !default;
 
 // colors
 $body-bg: #f0f1eb !default;
@@ -86,4 +87,9 @@ $presentation-heading-color: $link-color;
 .wide-box .fa-solid{
     margin-right: 100px;
     margin-left: 10px;
+}
+
+/* table styling */
+.pagedtable, .pagedtable-footer {
+    font-size: 14pt;
 }
