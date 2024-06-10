@@ -46,6 +46,8 @@ Associé (Kantiles)
 - Chaîne de production
 - Politiques sociales et de l'emploi
 
+Dernière fois aux RR 2021 [{{< fa link >}}](https://www.youtube.com/watch?v=Vk5q_pvp1EE&list=PLC0_Y4EpEglVuzm0Vs35FO7oRJcEoHVCu&index=15&t=1s) [{{< fa link >}}](https://www.youtube.com/watch?v=18_XWzG6KdM&list=PLC0_Y4EpEglVuzm0Vs35FO7oRJcEoHVCu&index=3)
+
 {{< fa arrow-right >}} Cas réels, dans le cadre de production d'indicateurs pour un service statistique ministériel
 
 :::
